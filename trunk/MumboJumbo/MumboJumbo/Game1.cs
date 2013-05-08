@@ -194,7 +194,7 @@ namespace MumboJumbo
                 player.cameraPosition.X -= 5f;
             }
 
-            if (player.cameraPosition.X < graphics.GraphicsDevice.Viewport.Width / 2 && player.facing == "left")
+            if (player.cameraPosition.X < graphics.GraphicsDevice.Viewport.Width / 2)
             {
                 player.cameraPosition.X += 5f;
                 map.mapX -= (int)cameraSpeed;
