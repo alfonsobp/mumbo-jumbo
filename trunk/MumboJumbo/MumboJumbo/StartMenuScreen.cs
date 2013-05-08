@@ -34,7 +34,7 @@ namespace MumboJumbo
             Texture2D options2 = ct.Load<Texture2D>("options2");
             Texture2D options3 = ct.Load<Texture2D>("options3");
             background = ct.Load<Texture2D>("Start");
-            Play = new Button(play1, play2, play3, new Vector2( (device.GraphicsDevice.Viewport.Width/ 2)-70, (device.GraphicsDevice.Viewport.Height / 2)-100));
+            Play = new Button(play1, play2, play3, new Vector2( (device.GraphicsDevice.Viewport.Width/ 2)-60, (device.GraphicsDevice.Viewport.Height / 2)-100));
             Options = new Button(options1, options2, options3, new Vector2(Play.position.X, Play.position.Y + play1.Width));
             Exit = new Button(exit1, exit2, exit3, new Vector2(Options.position.X, Options.position.Y + exit1.Width));
 

@@ -183,14 +183,14 @@ namespace MumboJumbo
                 player.cameraPosition.X -= 5f;
             }
 
-            if (player.worldPosition.X <= 0)
+            if (player.worldPosition.X <= 10)
             {
-                player.worldPosition.X = 0;
-                player.cameraPosition.X = 0;
+                player.worldPosition.X = 10;
+                player.cameraPosition.X = 10;
             }
-            if (map.mapX < 0)
+            if (map.mapX < 10)
             {
-                map.mapX = 0;
+                map.mapX = 10;
                 player.cameraPosition.X -= 5f;
             }
 
