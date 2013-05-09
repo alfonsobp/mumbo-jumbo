@@ -10,13 +10,13 @@ namespace MumboJumbo
 {
     class WorldManager
     {
-        public static StartMenuScreen screen;
-        public static int level = 0;
-        public static TileMap[] ListMap;
+       
+        public  int level = 0;
+        public  TileMap[] ListMap;
 
-        public static void Start(ContentManager ct,StartMenuScreen s)
+        public     void Start(ContentManager ct)
         {
-            screen = s;
+           /*Elementos de los mundos */
 
             ListMap = new TileMap[2];
 
@@ -26,8 +26,19 @@ namespace MumboJumbo
             Texture2D tex4 = ct.Load<Texture2D>("Ice_Block");
             Texture2D tex5 = ct.Load<Texture2D>("Ice_Block");
             Texture2D tex6 = ct.Load<Texture2D>("EnemySprite");
-           
-          
+
+
+            List<Texture2D> ListaElem = new List<Texture2D>();
+
+            ListaElem.Add(tex1);
+            ListaElem.Add(tex2);
+            ListaElem.Add(tex3);
+            ListaElem.Add(tex4);
+            ListaElem.Add(tex5);
+            ListaElem.Add(tex6);
+
+
+
 
             /*Level  0 */
 
@@ -49,15 +60,10 @@ namespace MumboJumbo
                 {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             };
 
-            TileMap map = new TileMap(MapWorld);
-            map.Texlis = new List<Texture2D>();
-            map.Texlis.Add(tex1);
-            map.Texlis.Add(tex2);
-            map.Texlis.Add(tex3);
-            map.Texlis.Add(tex4);
-            map.Texlis.Add(tex5);
-            map.Texlis.Add(tex6);
+            TileMap map = new TileMap(MapWorld,ListaElem);  
             ListMap[0] = map;
+
+           
 
             /*Level 1*/
             int[,] MapWorld_1 = new int[,] {
@@ -78,26 +84,21 @@ namespace MumboJumbo
                 {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
             };
 
-            TileMap map1 = new TileMap(MapWorld_1);
-            map1.Texlis = new List<Texture2D>();
-            map1.Texlis.Add(tex1);
-            map1.Texlis.Add(tex2);
-            map1.Texlis.Add(tex3);
-            map1.Texlis.Add(tex4);
-            map1.Texlis.Add(tex5);
-            map1.Texlis.Add(tex6);
+            
+            TileMap map1 = new TileMap(MapWorld_1,ListaElem);
+            
             ListMap[1] = map1;
 
-        
+       
         
         }
 
-        public static TileMap getCurrentWorld() {
+        public  TileMap getCurrentWorld() {
 
             return ListMap[level];
         }
 
-        public static void FinishLevel(Player p) {
+        public  void FinishLevel(Player p) {
 
             /*level 0 */
 
@@ -120,7 +121,7 @@ namespace MumboJumbo
                   if (ListMap[1].CountEnemies() == 0) {
                     
                       resetPlayer(p);
-                      screen.Play.clicked = false;
+                     
                       
                   }
  
@@ -132,7 +133,7 @@ namespace MumboJumbo
         
         }
 
-        public static void resetPlayer(Player p){
+        public  void resetPlayer(Player p){
 
             p.cameraPosition = new Vector2(0, 0);
             p.worldPosition = new Vector2(0, 0);

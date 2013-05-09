@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace MumboJumbo
 {
-    class Current
+    class Astral
     {
 
        
@@ -77,11 +77,11 @@ namespace MumboJumbo
 
         mapX = m.mapX;
         mapW = m.MapW;
-        astral = true;
+       
 
         source = p.source;
         rectangle = p.rectangle;
-
+        astral = true;
 
         }
 

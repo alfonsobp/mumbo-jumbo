@@ -37,13 +37,14 @@ namespace MumboJumbo
         public bool astralMode = false;
 
 
-        public TileMap(int[,] a)
+        public TileMap(int[,] a, List<Texture2D> texlis)
         {
             tilemap = a;
+            this.texlis = texlis;
 
 
             tilesize = 40;
-            texlis = new List<Texture2D>();
+            
             mapSizeX = tilemap.GetLength(1);
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
