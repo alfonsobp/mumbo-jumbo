@@ -55,7 +55,7 @@ namespace MumboJumbo
         float interval;
         public Color pcolor = Color.White;
         public bool astralMode = false;
-        public double timeElap;
+        
 
 
         public Player()

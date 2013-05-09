@@ -23,8 +23,9 @@ namespace MumboJumbo
         StartMenuScreen StartScreen;
         MultiBackground spaceBackground;
         double timeElap;
-        Current current;
-
+        Astral current;
+        WorldManager WorldManager1 = new WorldManager();
+        ScreenManager ScreenManager1 = new ScreenManager();
 
         public Game1()
         {
@@ -36,31 +37,22 @@ namespace MumboJumbo
             started = false;
             StartScreen = new StartMenuScreen();
             this.IsMouseVisible = true;
-            current = new Current();
+            current = new Astral();
 
         }
 
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+     
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
+         
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+        
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
+           
             spriteBatch = new SpriteBatch(GraphicsDevice);
             player = new Player();
             Texture2D tex = Content.Load<Texture2D>("Mumbo_SpSheets");
@@ -69,7 +61,7 @@ namespace MumboJumbo
 
 
 
-            //background inicializacion
+           
             spaceBackground = new MultiBackground(graphics);
             Texture2D spaceTexture = Content.Load<Texture2D>("game1");
 
@@ -81,42 +73,36 @@ namespace MumboJumbo
 
             StartScreen.LoadContent(graphics, Content);
 
-            WorldManager.Start(Content, StartScreen);
+            WorldManager1.Start(Content);
 
 
-            // TODO: use this.Content to load your game content here
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
+        
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        /// 
-
+      
         protected override void Update(GameTime gameTime)
         {
 
 
 
-            // Allows the game to exit
+            
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
+            
             KeyboardState key = Keyboard.GetState();
 
             if (key.IsKeyDown(Keys.A))
             {
-                OnAstralMode();
-                timeElap = gameTime.TotalGameTime.TotalSeconds;
+                if (!AstralMode)
+                {
+                    OnAstralMode();
+                    timeElap = gameTime.TotalGameTime.TotalSeconds;
+                }
 
             }
 
@@ -134,7 +120,7 @@ namespace MumboJumbo
 
 
 
-            WorldManager.getCurrentWorld().Update(gameTime);
+            WorldManager1.getCurrentWorld().Update(gameTime);
 
             StartScreen.Update();
 
@@ -148,7 +134,7 @@ namespace MumboJumbo
 
                 }
 
-                WorldManager.FinishLevel(player);
+                WorldManager1.FinishLevel(player);
                 spaceBackground.Update(gameTime);
                 player.Update(gameTime);
                 Camera();
@@ -167,48 +153,54 @@ namespace MumboJumbo
 
         public void OffAstralMode()
         {
+            WorldManager1.getCurrentWorld().astralMode = false;
             AstralMode = false;
             player.astralMode = false;
-            WorldManager.getCurrentWorld().astralMode = false;
+
+
+
+            /*Devolver los valores que cambiaste en astralMode*/
+
+            current.load(player, WorldManager1.getCurrentWorld());
+            
             /*Cambiar de estado a todos los elementos*/
-            foreach (WorldElement e in WorldManager.getCurrentWorld().elements)
+            foreach (WorldElement e in WorldManager1.getCurrentWorld().elements)
             {
                 if (e.Type == 4)
                 {
                     e.state = false;
 
-                    WorldManager.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
+                    WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
                 }
 
             }
 
-            /*Devolver los valores que cambiaste en astralMode*/
-
-            current.load(player, WorldManager.getCurrentWorld());
 
         }
 
         public void OnAstralMode()
         {
+            WorldManager1.getCurrentWorld().astralMode = true;
             AstralMode = true;
             player.astralMode = true;
-            WorldManager.getCurrentWorld().astralMode = true;
+
+            /*Guardar en Current las posiciones en el momento de hacer astralMode*/
+
+            current.save(player, WorldManager1.getCurrentWorld());
 
             /*Cambiar el estado a todos los elementos */
-            foreach (WorldElement e in WorldManager.getCurrentWorld().elements)
+            foreach (WorldElement e in WorldManager1.getCurrentWorld().elements)
             {
                 if (e.Type == 4)
                 {
                     e.state = true;
 
-                    WorldManager.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
+                    WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
                 }
 
             }
 
-            /*Guardar en Current las posiciones en el momento de hacer astralMode*/
 
-            current.save(player, WorldManager.getCurrentWorld());
 
         }
 
@@ -221,20 +213,22 @@ namespace MumboJumbo
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+          
             if (StartScreen.Play.clicked)
             {
                 spaceBackground.Draw();
-                WorldManager.getCurrentWorld().Draw(spriteBatch);
-                current.draw(spriteBatch, WorldManager.getCurrentWorld().mapX);
+                WorldManager1.getCurrentWorld().Draw(spriteBatch);
+                current.draw(spriteBatch, WorldManager1.getCurrentWorld().mapX);
                 player.Draw(spriteBatch);
             }
+
             if (!StartScreen.Play.clicked)
             {
 
                 StartScreen.Draw(spriteBatch);
 
             }
+
             base.Draw(gameTime);
         }
 
@@ -243,7 +237,7 @@ namespace MumboJumbo
             float cameraSpeed = 5f;
             if (player.cameraPosition.X > graphics.GraphicsDevice.Viewport.Width / 2)
             {
-                WorldManager.getCurrentWorld().mapX += (int)cameraSpeed;
+                WorldManager1.getCurrentWorld().mapX += (int)cameraSpeed;
                 player.cameraPosition.X -= 5f;
             }
 
@@ -252,20 +246,20 @@ namespace MumboJumbo
                 player.worldPosition.X = 10;
                 player.cameraPosition.X = 10;
             }
-            if (WorldManager.getCurrentWorld().mapX < 10)
+            if (WorldManager1.getCurrentWorld().mapX < 10)
             {
-                WorldManager.getCurrentWorld().mapX = 10;
+                WorldManager1.getCurrentWorld().mapX = 10;
                 player.cameraPosition.X -= 5f;
             }
 
             if (player.cameraPosition.X < graphics.GraphicsDevice.Viewport.Width / 2)
             {
                 player.cameraPosition.X += 5f;
-                WorldManager.getCurrentWorld().mapX -= (int)cameraSpeed;
+                WorldManager1.getCurrentWorld().mapX -= (int)cameraSpeed;
             }
-            if (WorldManager.getCurrentWorld().mapX > WorldManager.getCurrentWorld().MapW - graphics.GraphicsDevice.Viewport.Width)
+            if (WorldManager1.getCurrentWorld().mapX > WorldManager1.getCurrentWorld().MapW - graphics.GraphicsDevice.Viewport.Width)
             {
-                WorldManager.getCurrentWorld().mapX = WorldManager.getCurrentWorld().MapW - graphics.GraphicsDevice.Viewport.Width;
+                WorldManager1.getCurrentWorld().mapX = WorldManager1.getCurrentWorld().MapW - graphics.GraphicsDevice.Viewport.Width;
                 player.cameraPosition.X += 5f;
 
             }
@@ -287,7 +281,7 @@ namespace MumboJumbo
         {
 
 
-            foreach (WorldElement elem in WorldManager.getCurrentWorld().elements)
+            foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
             {
                 if (elem.BlocksBottom.Intersects(player.topBounds) && elem.state != false)
                 {
@@ -314,7 +308,7 @@ namespace MumboJumbo
                     if (elem.Type == 5)
                     {
                         elem.state = false;
-                        WorldManager.getCurrentWorld().tilemap[elem.Y, elem.X] = 0;
+                        WorldManager1.getCurrentWorld().tilemap[elem.Y, elem.X] = 0;
                     }
 
                     player.gravity = 0f;
