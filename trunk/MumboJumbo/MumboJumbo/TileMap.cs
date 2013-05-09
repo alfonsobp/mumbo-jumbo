@@ -34,29 +34,13 @@ namespace MumboJumbo
         public int mapX;
         public int MapW;
 
+        public bool astralMode = false;
 
 
-
-        public TileMap()
+        public TileMap(int[,] a)
         {
-            tilemap = new int[,]
-            {
-                {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,1,1,1,0,0,0,1,0,0,0,0,0,4,0,0,5,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,1,0,1,0,0,0,1,0,0,4,4,4,4,0,0,1,0,0,1,0,0,0,0,0,0,0,1,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,2,1,1,0,0,0,0,0,0,3,0,0,0,0,0,1,0,0,1,0,0,0,5,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},
-                {0,0,1,2,0,0,0,0,0,0,0,0,3,0,0,0,0,1,1,0,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,2,0,0,0,0,0,0,0,3,3,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {1,1,1,1,1,1,3,3,3,3,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,0,0,0,0,0,0,0,4,4,4,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {1,0,5,0,0,0,0,0,0,0,0,0,0,0,2,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,1,1,0,0,0,5,0,0,0,0,5,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,1,1,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,1,1,1,1,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-                {0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-            };
+            tilemap = a;
+
 
             tilesize = 40;
             texlis = new List<Texture2D>();
@@ -73,8 +57,8 @@ namespace MumboJumbo
                 {
                     if (tilemap[y, x] > 0)
                     {
-                        elements.Add(new WorldElement(new Rectangle(x * tilesize - mapX, y * tilesize, 35, 30), tilemap[y, x],x,y));
-                        
+                        elements.Add(new WorldElement(new Rectangle(x * tilesize - mapX, y * tilesize, 35, 30), tilemap[y, x], x, y));
+
                     }
                 }
             }
@@ -99,58 +83,43 @@ namespace MumboJumbo
             MapW = tilesize * mapSizeX;
 
         }
-        double timeElap;
-        Boolean astralMode = false;
 
 
         public void Update(GameTime gameTime)
         {
-            KeyboardState key = Keyboard.GetState();
-            if (key.IsKeyDown(Keys.S))
-            {
-                astralMode = true;
-                timeElap = gameTime.TotalGameTime.TotalSeconds;
-            }
 
-            if (key.IsKeyDown(Keys.T))
-            {
-                astralMode = false;
-                
-            }
 
-            if (astralMode == true)
+
+        }
+
+        public int CountEnemies()
+        {
+
+            int count = 0;
+
+            for (int i = 0; i < mapSizeX; i++)
             {
-                foreach (WorldElement e in elements)
+                for (int j = 0; j < mapSizeY; j++)
                 {
-                    if (e.Type == 4)
-                    {
-                        e.state = true;
-                        
-                        this.tilemap[e.Y, e.X] = e.Type;
-                    }
+                    tileindex = tilemap[j, i];
+
+                    if (tileindex >= 5)
+                        count++;
+
+
+
                 }
-            }
-            else {
-                foreach (WorldElement e in elements)
-                {
-                    if (e.Type == 4)
-                    {
-                        e.state = false;
-                        this.tilemap[e.Y, e.X] = 0;
-                    }
-                }
+
             }
 
-            if (astralMode && gameTime.TotalGameTime.TotalSeconds - timeElap >= 5) astralMode = false;
-            
-
+            return count;
         }
 
 
         public void Draw(SpriteBatch sp)
         {
             sp.Begin();
-            
+
             for (int i = 0; i < mapSizeX; i++)
             {
                 for (int j = 0; j < mapSizeY; j++)
@@ -158,12 +127,14 @@ namespace MumboJumbo
                     tileindex = tilemap[j, i];
                     tex = texlis[tileindex];
 
-                    if (tileindex == 4) {
+                    if (tileindex == 4)
+                    {
+                        if (astralMode)
                             sp.Draw(tex, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.Blue);
                     }
-                    else 
+                    else
                         sp.Draw(tex, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.White);
-                    
+
                 }
 
             }

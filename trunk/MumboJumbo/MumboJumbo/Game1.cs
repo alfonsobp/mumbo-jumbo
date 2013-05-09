@@ -16,12 +16,14 @@ namespace MumboJumbo
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-        TileMap map;
+        bool AstralMode = false;
+
         Song music;
         bool started;
         StartMenuScreen StartScreen;
         MultiBackground spaceBackground;
-         
+        double timeElap;
+        Current current;
 
 
         public Game1()
@@ -29,13 +31,15 @@ namespace MumboJumbo
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             //graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferHeight=600 ;
+            graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             started = false;
             StartScreen = new StartMenuScreen();
             this.IsMouseVisible = true;
-            
+            current = new Current();
+
         }
+
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -61,33 +65,24 @@ namespace MumboJumbo
             player = new Player();
             Texture2D tex = Content.Load<Texture2D>("Mumbo_SpSheets");
             player.LoadContent(tex);
-            map = new TileMap();
-            Texture2D tex1 = Content.Load<Texture2D>("in");
-            Texture2D tex2 = Content.Load<Texture2D>("marioblock[1]");
-            Texture2D tex3 = Content.Load<Texture2D>("ladder2");
-            Texture2D tex4 = Content.Load<Texture2D>("Ice_Block");
-            Texture2D tex5 = Content.Load<Texture2D>("Ice_Block");
-            Texture2D tex6 = Content.Load<Texture2D>("EnemySprite");
-            map.Texlis = new List<Texture2D>();
-            map.Texlis.Add(tex1);
-            map.Texlis.Add(tex2);
-            map.Texlis.Add(tex3);
-            map.Texlis.Add(tex4);
-            map.Texlis.Add(tex5);
-            map.Texlis.Add(tex6);
+
+
+
 
             //background inicializacion
             spaceBackground = new MultiBackground(graphics);
             Texture2D spaceTexture = Content.Load<Texture2D>("game1");
 
             spaceBackground.AddLayer(spaceTexture, 0, 60);
-            
-            
+
+
             music = Content.Load<Song>("Mumbo_Jumbo");
             MediaPlayer.IsRepeating = true;
 
             StartScreen.LoadContent(graphics, Content);
-            
+
+            WorldManager.Start(Content, StartScreen);
+
 
             // TODO: use this.Content to load your game content here
         }
@@ -107,22 +102,40 @@ namespace MumboJumbo
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         /// 
-        
+
         protected override void Update(GameTime gameTime)
         {
-            
+
+
+
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             KeyboardState key = Keyboard.GetState();
+
+            if (key.IsKeyDown(Keys.A))
+            {
+                OnAstralMode();
+                timeElap = gameTime.TotalGameTime.TotalSeconds;
+
+            }
+
+            if (AstralMode && gameTime.TotalGameTime.TotalSeconds - timeElap >= 5)
+            {
+                OffAstralMode();
+            }
+
+
+
             if (key.IsKeyDown(Keys.Escape))
             {
                 this.Exit();
             }
 
-            
 
-            map.Update(gameTime);
+
+            WorldManager.getCurrentWorld().Update(gameTime);
+
             StartScreen.Update();
 
             if (StartScreen.Play.clicked)
@@ -132,8 +145,10 @@ namespace MumboJumbo
                 {
                     MediaPlayer.Play(music);
                     started = true;
+
                 }
-                
+
+                WorldManager.FinishLevel(player);
                 spaceBackground.Update(gameTime);
                 player.Update(gameTime);
                 Camera();
@@ -146,9 +161,57 @@ namespace MumboJumbo
             }
             // TODO: Add your update logic here
 
+
             base.Update(gameTime);
         }
-      
+
+        public void OffAstralMode()
+        {
+            AstralMode = false;
+            player.astralMode = false;
+            WorldManager.getCurrentWorld().astralMode = false;
+            /*Cambiar de estado a todos los elementos*/
+            foreach (WorldElement e in WorldManager.getCurrentWorld().elements)
+            {
+                if (e.Type == 4)
+                {
+                    e.state = false;
+
+                    WorldManager.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
+                }
+
+            }
+
+            /*Devolver los valores que cambiaste en astralMode*/
+
+            current.load(player, WorldManager.getCurrentWorld());
+
+        }
+
+        public void OnAstralMode()
+        {
+            AstralMode = true;
+            player.astralMode = true;
+            WorldManager.getCurrentWorld().astralMode = true;
+
+            /*Cambiar el estado a todos los elementos */
+            foreach (WorldElement e in WorldManager.getCurrentWorld().elements)
+            {
+                if (e.Type == 4)
+                {
+                    e.state = true;
+
+                    WorldManager.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
+                }
+
+            }
+
+            /*Guardar en Current las posiciones en el momento de hacer astralMode*/
+
+            current.save(player, WorldManager.getCurrentWorld());
+
+        }
+
 
         /// <summary>
         /// This is called when the game should draw itself.
@@ -157,17 +220,18 @@ namespace MumboJumbo
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-               
+
             // TODO: Add your drawing code here
             if (StartScreen.Play.clicked)
             {
                 spaceBackground.Draw();
-                map.Draw(spriteBatch);
+                WorldManager.getCurrentWorld().Draw(spriteBatch);
+                current.draw(spriteBatch, WorldManager.getCurrentWorld().mapX);
                 player.Draw(spriteBatch);
             }
             if (!StartScreen.Play.clicked)
             {
-                
+
                 StartScreen.Draw(spriteBatch);
 
             }
@@ -179,7 +243,7 @@ namespace MumboJumbo
             float cameraSpeed = 5f;
             if (player.cameraPosition.X > graphics.GraphicsDevice.Viewport.Width / 2)
             {
-                map.mapX += (int)cameraSpeed;
+                WorldManager.getCurrentWorld().mapX += (int)cameraSpeed;
                 player.cameraPosition.X -= 5f;
             }
 
@@ -188,22 +252,22 @@ namespace MumboJumbo
                 player.worldPosition.X = 10;
                 player.cameraPosition.X = 10;
             }
-            if (map.mapX < 10)
+            if (WorldManager.getCurrentWorld().mapX < 10)
             {
-                map.mapX = 10;
+                WorldManager.getCurrentWorld().mapX = 10;
                 player.cameraPosition.X -= 5f;
             }
 
             if (player.cameraPosition.X < graphics.GraphicsDevice.Viewport.Width / 2)
             {
                 player.cameraPosition.X += 5f;
-                map.mapX -= (int)cameraSpeed;
+                WorldManager.getCurrentWorld().mapX -= (int)cameraSpeed;
             }
-            if (map.mapX > map.MapW - graphics.GraphicsDevice.Viewport.Width)
+            if (WorldManager.getCurrentWorld().mapX > WorldManager.getCurrentWorld().MapW - graphics.GraphicsDevice.Viewport.Width)
             {
-                map.mapX = map.MapW - graphics.GraphicsDevice.Viewport.Width;
+                WorldManager.getCurrentWorld().mapX = WorldManager.getCurrentWorld().MapW - graphics.GraphicsDevice.Viewport.Width;
                 player.cameraPosition.X += 5f;
-                
+
             }
 
             if (player.cameraPosition.X > graphics.GraphicsDevice.Viewport.Width)
@@ -221,17 +285,17 @@ namespace MumboJumbo
 
         public void Collision()
         {
-      
 
-            foreach (WorldElement elem in map.elements)
+
+            foreach (WorldElement elem in WorldManager.getCurrentWorld().elements)
             {
-                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.state != false )
+                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.state != false)
                 {
                     if (elem.Type == 2)
                     {
                         if (Keyboard.GetState().IsKeyDown(Keys.Up))
                         {
-                            
+
                             player.worldPosition.Y -= 3f;
                             player.cameraPosition.Y -= 3f;
                         }
@@ -250,7 +314,7 @@ namespace MumboJumbo
                     if (elem.Type == 5)
                     {
                         elem.state = false;
-                        map.tilemap[elem.Y, elem.X] = 0;
+                        WorldManager.getCurrentWorld().tilemap[elem.Y, elem.X] = 0;
                     }
 
                     player.gravity = 0f;
@@ -258,7 +322,7 @@ namespace MumboJumbo
                     player.startY = player.worldPosition.Y;
                 }
 
-                if (elem.Type != 2 && elem.BlocksLeft.Intersects(player.rightRec) && elem.state!=false)
+                if (elem.Type != 2 && elem.BlocksLeft.Intersects(player.rightRec) && elem.state != false)
                 {
                     if (player.footBounds.Y >= elem.BlocksLeft.Y)
                     {
@@ -267,7 +331,7 @@ namespace MumboJumbo
                     }
                 }
 
-                if (elem.Type != 2 && elem.BlocksRight.Intersects(player.leftRec) && elem.state != false )
+                if (elem.Type != 2 && elem.BlocksRight.Intersects(player.leftRec) && elem.state != false)
                 {
                     if (player.footBounds.Y >= elem.BlocksRight.Y)
                     {
@@ -278,7 +342,7 @@ namespace MumboJumbo
             }
 
         }
-          
+
 
     }
 }

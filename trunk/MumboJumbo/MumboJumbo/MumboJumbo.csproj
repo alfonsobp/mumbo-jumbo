@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="AnimationSprite.cs" />
     <Compile Include="Button.cs" />
+    <Compile Include="Current.cs" />
     <Compile Include="MultiBackground.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="StartMenuScreen.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="WorldElement.cs" />
+    <Compile Include="WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

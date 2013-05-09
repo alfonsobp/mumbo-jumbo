@@ -17,6 +17,12 @@ namespace MumboJumbo
     class Player
     {
         Texture2D texture;
+
+        public Texture2D Texture
+        {
+            get { return texture; }
+            set { texture = value; }
+        }
         public Vector2 cameraPosition;
         public Vector2 worldPosition;
         public Rectangle rectangle;
@@ -29,8 +35,8 @@ namespace MumboJumbo
         public string facing;
         public string state;
         public bool jump;
-        float jumpSpeed;
-        
+        public float jumpSpeed;
+
 
         public float JumpSpeed
         {
@@ -40,13 +46,17 @@ namespace MumboJumbo
         public float gravity;
         public float startY;
         public float speed;
-        float time;
+        public float time;
         public string prevstate;
-        Point frameSize;
-        Point sheetSize;
-        Point currentFrame;
+        public Point frameSize;
+        public Point sheetSize;
+        public Point currentFrame;
         public Rectangle source;
         float interval;
+        public Color pcolor = Color.White;
+        public bool astralMode = false;
+        public double timeElap;
+
 
         public Player()
         {
@@ -65,6 +75,7 @@ namespace MumboJumbo
             time = 0f;
             interval = 100f;
 
+
         }
 
         public void LoadContent(Texture2D tex)
@@ -80,6 +91,10 @@ namespace MumboJumbo
             keystate = Keyboard.GetState();
             cameraPosition.Y += gravity;
             worldPosition.Y += gravity;
+
+
+
+
 
             if (keystate.IsKeyDown(Keys.Right))
             {
@@ -161,7 +176,7 @@ namespace MumboJumbo
                         jumpSpeed -= 18f;
                         jump = true;
                         gravity = 0f;
-                   }
+                    }
                 }
             }
 
@@ -188,18 +203,21 @@ namespace MumboJumbo
         }
 
 
+
         public void Draw(SpriteBatch sp)
         {
             sp.Begin();
 
+            pcolor = (astralMode) ? Color.Red : Color.White;
+
             if (facing == "right")
             {
-                sp.Draw(texture, cameraPosition, source, Color.White, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.None, 0);
+                sp.Draw(texture, cameraPosition, source, pcolor, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.None, 0);
             }
 
             if (facing == "left")
             {
-                sp.Draw(texture, cameraPosition, source, Color.White, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.FlipHorizontally, 0);
+                sp.Draw(texture, cameraPosition, source, pcolor, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.FlipHorizontally, 0);
             }
 
             sp.End();
@@ -207,7 +225,7 @@ namespace MumboJumbo
 
 
 
-       public void MoveAnimation(GameTime gt)
+        public void MoveAnimation(GameTime gt)
         {
 
             time += (float)gt.ElapsedGameTime.TotalMilliseconds;
