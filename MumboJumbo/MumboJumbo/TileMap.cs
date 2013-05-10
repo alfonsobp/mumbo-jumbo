@@ -49,6 +49,7 @@ namespace MumboJumbo
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
 
+
             tile = new List<Rectangle>();
             mapX = 0;
 
@@ -67,10 +68,10 @@ namespace MumboJumbo
             foreach (WorldElement elem in elements)
             {
 
-                elem.BlocksTop = new Rectangle(elem.Block.Center.X, elem.Block.Top, elem.Block.Width, elem.Block.Height);
-                elem.BlocksBottom = new Rectangle(elem.Block.Center.X, elem.Block.Bottom, elem.Block.Width, elem.Block.Height);
-                elem.BlocksLeft = new Rectangle(elem.Block.Left, elem.Block.Y, 1, elem.Block.Height);
-                elem.BlocksRight = new Rectangle(elem.Block.Right, elem.Block.Y, elem.Block.Width / 2, elem.Block.Height);
+                elem.BlocksTop = new Rectangle(elem.Block.Left + 2, elem.Block.Y, elem.Block.Width - 2, 6);
+                elem.BlocksBottom = new Rectangle(elem.Block.Left + 2, elem.Block.Bottom, elem.Block.Width - 2, elem.Block.Height / 2);
+                elem.BlocksLeft = new Rectangle(elem.Block.Left, elem.Block.Y, elem.Block.Width / 2, elem.Block.Height);
+                elem.BlocksRight = new Rectangle(elem.Block.Right, elem.Block.Y, 6, elem.Block.Height);   
             }
 
             for (int x = 0; x < mapSizeX; x++)

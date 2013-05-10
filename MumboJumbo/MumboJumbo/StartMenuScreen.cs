@@ -18,9 +18,11 @@ namespace MumboJumbo
     {
 
         public Button Play;
-        public Button Options;
+        public Button Load;
         public Button Exit;
         public Texture2D background;
+        public bool Enable = true;
+
         public void LoadContent(GraphicsDeviceManager device,ContentManager ct)
         { 
 
@@ -30,22 +32,23 @@ namespace MumboJumbo
             Texture2D exit1 = ct.Load<Texture2D>("exit1");
             Texture2D exit2 = ct.Load<Texture2D>("exit2");
             Texture2D exit3 = ct.Load<Texture2D>("exit3");
-            Texture2D options1 = ct.Load<Texture2D>("options1");
-            Texture2D options2 = ct.Load<Texture2D>("options2");
-            Texture2D options3 = ct.Load<Texture2D>("options3");
+            Texture2D load1 = ct.Load<Texture2D>("Load1");
+            Texture2D load2 = ct.Load<Texture2D>("Load2");
+            Texture2D load3 = ct.Load<Texture2D>("Load3");
             background = ct.Load<Texture2D>("Start");
             Play = new Button(play1, play2, play3, new Vector2( (device.GraphicsDevice.Viewport.Width/ 2)-60, (device.GraphicsDevice.Viewport.Height / 2)-100));
-            Options = new Button(options1, options2, options3, new Vector2(Play.position.X, Play.position.Y + play1.Width));
-            Exit = new Button(exit1, exit2, exit3, new Vector2(Options.position.X, Options.position.Y + exit1.Width));
+            Load = new Button(load1, load2, load3, new Vector2(Play.position.X-15, Play.position.Y + play1.Height*2));
+            Exit = new Button(exit1, exit2, exit3, new Vector2(Load.position.X+20,Load.position.Y + exit1.Height*2));
 
         }
 
         public void Update()
         {
             
-            Play.Update();
-            Options.Update();
-            Exit.Update();
+                Play.Update();
+                Load.Update();
+                Exit.Update();
+            
         }
 
         public void Draw(SpriteBatch sp)
@@ -55,7 +58,7 @@ namespace MumboJumbo
             sp.End();
 
             Play.Draw(sp);
-            Options.Draw(sp);
+            Load.Draw(sp);
             Exit.Draw(sp);
             
         }
