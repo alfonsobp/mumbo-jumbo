@@ -195,10 +195,10 @@ namespace MumboJumbo
             }
 
             rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 20, 25);
-            footBounds = new Rectangle(rectangle.Center.X, rectangle.Center.Y, rectangle.Width, rectangle.Height / 2);
-            rightRec = new Rectangle(rectangle.Center.X, rectangle.Y, rectangle.Width / 2, rectangle.Height);
-            leftRec = new Rectangle(rectangle.Left, rectangle.Y, 1, rectangle.Height);
-            topBounds = new Rectangle(rectangle.Center.X, rectangle.Top, rectangle.Width, rectangle.Height / 2);
+            footBounds = new Rectangle(rectangle.X, rectangle.Center.Y, rectangle.Width - 3, rectangle.Height / 2);
+            rightRec = new Rectangle(rectangle.Right - 3, rectangle.Y, 3, rectangle.Height);
+            leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
+            topBounds = new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 3, 3);
 
         }
 

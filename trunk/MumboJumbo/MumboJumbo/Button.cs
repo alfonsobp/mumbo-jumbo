@@ -51,6 +51,7 @@ namespace MumboJumbo
             else
             {
                 currentTex = image1;
+                
             }
 
         }
