@@ -17,29 +17,29 @@ namespace MumboJumbo
     class TileMap
     {
         public int[,] tilemap;
+        public int[,] astralObjects;
         int tilesize;
         int mapSizeX;
         int mapSizeY;
         int tileindex;
         Texture2D tex;
         List<Texture2D> texlis;
+        public List<WorldElement> elements;
+        public int mapX;
+        public int MapW;
+        public bool astralMode = false;
+        
 
         public List<Texture2D> Texlis
         {
             get { return texlis; }
             set { texlis = value; }
         }
-        public List<WorldElement> elements;
-        public List<Rectangle> tile;
-        public int mapX;
-        public int MapW;
 
-        public bool astralMode = false;
-
-
-        public TileMap(int[,] a, List<Texture2D> texlis)
+        public TileMap(int[,] a, int[,] b, List<Texture2D> texlis)
         {
             tilemap = a;
+            astralObjects = b;
             this.texlis = texlis;
 
 
@@ -49,8 +49,6 @@ namespace MumboJumbo
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
 
-
-            tile = new List<Rectangle>();
             mapX = 0;
 
             for (int x = 0; x < mapSizeX; x++)
@@ -59,8 +57,11 @@ namespace MumboJumbo
                 {
                     if (tilemap[y, x] > 0)
                     {
-                        elements.Add(new WorldElement(new Rectangle(x * tilesize - mapX, y * tilesize, 35, 30), tilemap[y, x], x, y));
-
+                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, 35, 30), tilemap[y, x], x, y, false));
+                    }
+                    if (astralObjects[y, x] > 0)
+                    {
+                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, 35, 30), astralObjects[y, x], x, y, true));
                     }
                 }
             }
@@ -74,14 +75,7 @@ namespace MumboJumbo
                 elem.BlocksRight = new Rectangle(elem.Block.Right, elem.Block.Y, 6, elem.Block.Height);   
             }
 
-            for (int x = 0; x < mapSizeX; x++)
-            {
-                for (int y = 0; y < mapSizeY; y++)
-                {
-                    tile.Add(new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize));
-                }
-            }
-
+          
             MapW = tilesize * mapSizeX;
 
         }
@@ -127,15 +121,12 @@ namespace MumboJumbo
                 for (int j = 0; j < mapSizeY; j++)
                 {
                     tileindex = tilemap[j, i];
+                    int tileindex2 = astralObjects[j, i];
                     tex = texlis[tileindex];
-
-                    if (tileindex == 4)
-                    {
-                        if (astralMode)
-                            sp.Draw(tex, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.Blue);
-                    }
-                    else
-                        sp.Draw(tex, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.White);
+                    Texture2D tex2 = texlis[tileindex2];
+                   
+                    sp.Draw(tex, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.White);
+                    if (astralMode) sp.Draw(tex2, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.Red);
 
                 }
 
