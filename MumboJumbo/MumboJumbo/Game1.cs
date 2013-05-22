@@ -37,7 +37,7 @@ namespace MumboJumbo
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             started = false;
@@ -361,26 +361,29 @@ namespace MumboJumbo
             foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
             {
 
-                if (elem.Scalable && (elem.BlocksBottom.Intersects(player.topBounds) || elem.BlocksTop.Intersects(player.topBounds) || elem.BlocksTop.Intersects(player.footBounds)) && elem.State)
+                if (elem.Scalable)
                 {
-
-
-                    if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    if (elem.BlocksTop.Intersects(player.footBounds))
                     {
-
-                        player.worldPosition.Y -= 3f;
-                        player.cameraPosition.Y -= 3f;
+                        player.startY = player.worldPosition.Y;
                         player.gravity = 0f;
-                    }
 
-                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    }
+                    if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Up))
                     {
-
-                        player.worldPosition.Y += 3f;
-                        player.cameraPosition.Y += 3f;
                         player.gravity = 0f;
+                        player.worldPosition.Y -= 2f;
+                        player.cameraPosition.Y -= 2f;
                     }
-
+                    if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+                        if (elem.BlocksTop.Intersects(player.footBounds))
+                        {
+                            player.gravity = 0f;
+                            player.worldPosition.Y += 2f;
+                            player.cameraPosition.Y += 2f;
+                        }
+                    }
                 }
 
                 if (elem.BlocksBottom.Intersects(player.topBounds) && elem.State)
