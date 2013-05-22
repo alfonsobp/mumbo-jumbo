@@ -229,20 +229,17 @@ namespace MumboJumbo
             AstralMode = false;
             player.astralMode = false;
 
-
-
             /*Devolver los valores que cambiaste en astralMode*/
 
             current.load(player, WorldManager1.getCurrentWorld());
-            
+
             /*Cambiar de estado a todos los elementos*/
             foreach (WorldElement e in WorldManager1.getCurrentWorld().elements)
             {
-                if (e.Type == 4)
+                if (e.AstralObject == true)
                 {
-                    e.state = false;
-
-                    WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
+                    e.State = false;
+                    //WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
                 }
 
             }
@@ -263,11 +260,11 @@ namespace MumboJumbo
             /*Cambiar el estado a todos los elementos */
             foreach (WorldElement e in WorldManager1.getCurrentWorld().elements)
             {
-                if (e.Type == 4)
+                if (e.AstralObject == true)
                 {
-                    e.state = true;
 
-                    WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
+                    e.State = true;
+                    // WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
                 }
 
             }
@@ -361,57 +358,58 @@ namespace MumboJumbo
         public void Collision()
         {
 
-
             foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
             {
-                if (elem.Type == 2)
-                {
-                    if (elem.BlocksTop.Intersects(player.footBounds))
-                    {
-                        player.startY = player.worldPosition.Y;
-                        player.gravity = 0f;
 
-                    }
-                    if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Up))
-                    {
-                        player.gravity = 0f;
-                        player.worldPosition.Y -= 2f;
-                        player.cameraPosition.Y -= 2f;
-                    }
-                    if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Down))
-                    {
-                        if (elem.BlocksTop.Intersects(player.footBounds))
-                        {
-                            player.gravity = 0f;
-                            player.worldPosition.Y += 2f;
-                            player.cameraPosition.Y += 2f;
-                        }
-                    }
-                }
-                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.state != false)
+                if (elem.Scalable && (elem.BlocksBottom.Intersects(player.topBounds) || elem.BlocksTop.Intersects(player.topBounds) || elem.BlocksTop.Intersects(player.footBounds)) && elem.State)
                 {
+
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Up))
+                    {
+
+                        player.worldPosition.Y -= 3f;
+                        player.cameraPosition.Y -= 3f;
+                        player.gravity = 0f;
+                    }
+
+                    if (Keyboard.GetState().IsKeyDown(Keys.Down))
+                    {
+
+                        player.worldPosition.Y += 3f;
+                        player.cameraPosition.Y += 3f;
+                        player.gravity = 0f;
+                    }
+
+                }
+
+                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.State)
+                {
+
                     if ((player.topBounds.Y >= elem.BlocksBottom.Y))
                     {
                         player.gravity = 5f;
                         player.jump = false;
                         player.JumpSpeed = 0f;
-                        player.state = "fall";
+                        //player.startY=;
                     }
                 }
 
-                if (elem.Type != 2 && elem.BlocksTop.Intersects(player.footBounds) && elem.state != false)
+                if (elem.BlocksTop.Intersects(player.footBounds) && elem.State)
                 {
                     if (elem.Type == 5)
                     {
-                        elem.state = false;
+                        elem.State = false;
                         WorldManager1.getCurrentWorld().tilemap[elem.Y, elem.X] = 0;
+                        if (elem.AstralObject) WorldManager1.getCurrentWorld().astralObjects[elem.Y, elem.X] = 0;
                     }
-                    player.startY = player.worldPosition.Y;
+
                     player.gravity = 0f;
                     player.state = "stand";
+                    player.startY = player.worldPosition.Y;
                 }
 
-                if (elem.Type != 2 && elem.BlocksLeft.Intersects(player.rightRec) && elem.state != false)
+                if (!elem.Scalable && elem.BlocksLeft.Intersects(player.rightRec) && elem.State)
                 {
                     if (player.footBounds.Y >= elem.BlocksLeft.Y)
                     {
@@ -420,7 +418,7 @@ namespace MumboJumbo
                     }
                 }
 
-                if (elem.Type != 2 && elem.BlocksRight.Intersects(player.leftRec) && elem.state != false)
+                if (!elem.Scalable && elem.BlocksRight.Intersects(player.leftRec) && elem.State)
                 {
                     if (player.footBounds.Y >= elem.BlocksRight.Y)
                     {
@@ -429,6 +427,7 @@ namespace MumboJumbo
                     }
                 }
             }
+
 
         }
 
@@ -467,7 +466,7 @@ namespace MumboJumbo
                 for (int i = 0; i < lbool.GetLength(0); i++)
                 {
 
-                    lbool[i] = WorldManager1.getCurrentWorld().elements[i].state;
+                    lbool[i] = WorldManager1.getCurrentWorld().elements[i].State;
                 }
 
                 Save SaveData = new Save()
@@ -578,7 +577,7 @@ namespace MumboJumbo
                 for (int i = 0; i < save.lstate.GetLength(0); i++)
                 {
 
-                    WorldManager1.getCurrentWorld().elements[i].state = save.lstate[i];
+                    WorldManager1.getCurrentWorld().elements[i].State = save.lstate[i];
                 }
 
 
