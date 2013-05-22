@@ -43,12 +43,13 @@ namespace MumboJumbo
             this.texlis = texlis;
 
 
-            tilesize = 40;
+            
             
             mapSizeX = tilemap.GetLength(1);
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
 
+            tilesize =Game1.graphics.PreferredBackBufferHeight/mapSizeY;
             mapX = 0;
 
             for (int x = 0; x < mapSizeX; x++)
@@ -57,11 +58,11 @@ namespace MumboJumbo
                 {
                     if (tilemap[y, x] > 0)
                     {
-                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, 35, 30), tilemap[y, x], x, y, false));
+                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize), tilemap[y, x], x, y, false));
                     }
                     if (astralObjects[y, x] > 0)
                     {
-                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, 35, 30), astralObjects[y, x], x, y, true));
+                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize), astralObjects[y, x], x, y, true));
                     }
                 }
             }

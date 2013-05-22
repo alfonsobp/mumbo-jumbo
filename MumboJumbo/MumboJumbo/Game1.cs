@@ -18,7 +18,7 @@ namespace MumboJumbo
     {
         string containerName = "MyGamesStorage";
         string filename = "mysave.sav";
-        GraphicsDeviceManager graphics;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
         bool AstralMode = false;
