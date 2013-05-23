@@ -200,6 +200,8 @@ namespace MumboJumbo
                         if (BlocksRight.Intersects(player.leftRec))
                         {
                             player.Life = false;
+                            player.Lives -= 1;
+                            
                             worldPosition.X += 15f;
                             player.worldPosition.X -= 5f;
                             player.cameraPosition.X -= 5f;
@@ -210,17 +212,12 @@ namespace MumboJumbo
                         if (BlocksLeft.Intersects(player.rightRec))
                         {
                             player.Life = false;
+                            player.Lives -= 1;
+      
                             worldPosition.X -= 15f;
                             player.worldPosition.X += 5f;
                             player.cameraPosition.X += 5f;
                            
-                           
-
-                        }
-                        if (BlocksBottom.Intersects(player.topBounds))
-                        {
-                            player.Life = false;   
-
                         }
 
 

@@ -29,6 +29,7 @@ namespace MumboJumbo
         MultiBackground spaceBackground;
         double timeElap;
         Astral current;
+        Astral playerIni;
         WorldManager WorldManager1 = new WorldManager();
         ScreenManager ScreenManager1 = new ScreenManager();
         StorageDevice device;
@@ -46,6 +47,7 @@ namespace MumboJumbo
             started = false;
             this.IsMouseVisible = true;
             current = new Astral();
+            playerIni = new Astral();
 
 
         }
@@ -83,6 +85,7 @@ namespace MumboJumbo
            
 
             WorldManager1.Start(Content);
+            playerIni.save(player, WorldManager1.getCurrentWorld());
 
 
         }
@@ -164,7 +167,9 @@ namespace MumboJumbo
 
             WorldManager1.getCurrentWorld().Update(gameTime,player);
             ScreenManager1.update(gameTime);
+            int lvlAnt = WorldManager1.level;
             WorldManager1.FinishLevel(player);
+            if (WorldManager1.level>lvlAnt) playerIni.save(player, WorldManager1.getCurrentWorld());
 
             if (!ScreenManager1.getStartScreen().Enable && !ScreenManager1.getIntermediateScreen().Enable)
             {
@@ -195,8 +200,10 @@ namespace MumboJumbo
                 ScreenManager1.getIntermediateScreen().Resume.clicked = false;
             }
 
-            if (!player.Life)
+            if (player.Lives==0)
                 ScreenManager1.getGameOver().Enable = true;
+            if (!player.Life)
+                playerIni.load(player, WorldManager1.getCurrentWorld());
 
             if (ScreenManager1.getStartScreen().Exit.clicked||ScreenManager1.getIntermediateScreen().Exit.clicked)
             {

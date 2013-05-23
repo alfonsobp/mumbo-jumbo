@@ -37,6 +37,15 @@ namespace MumboJumbo
         public bool jump;
         public float jumpSpeed;
         Boolean life = true;
+        int lives = 3;
+
+        public int Lives
+        {
+            get { return lives; }
+            set { lives = value; }
+        }
+
+
         public Boolean Life
         {
             get { return life; }
@@ -89,6 +98,25 @@ namespace MumboJumbo
             texture = tex;
         }
 
+        public void resetPlayer()
+        {
+
+            this.cameraPosition = new Vector2(0, 0);
+            this.worldPosition = new Vector2(0, 0);
+            this.startY = worldPosition.Y;
+            this.facing = "right";
+            this.prevstate = this.state;
+            this.state = "stand";
+            this.jump = false;
+            this.gravity = 0f;
+            this.speed = 5f;
+            this.frameSize = new Point(30, 30);
+            this.sheetSize = new Point(6, 7);
+            this.currentFrame = new Point(0, 0);
+            this.time = 0f;
+        }
+
+
         public void Update(GameTime gt)
         {
             time += (float)gt.ElapsedGameTime.TotalSeconds;
@@ -96,9 +124,6 @@ namespace MumboJumbo
             keystate = Keyboard.GetState();
             cameraPosition.Y += gravity;
             worldPosition.Y += gravity;
-
-
-
 
 
             if (keystate.IsKeyDown(Keys.Right))

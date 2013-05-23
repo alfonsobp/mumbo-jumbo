@@ -137,7 +137,11 @@ namespace MumboJumbo
                             player.startY = player.worldPosition.Y;
 
                             if (elem.Hurts)
+                            {
                                 player.Life = false;
+                                player.Lives -= 1;
+                                player.resetPlayer();
+                            }
                         }
 
                         if (elem.BlocksLeft.Intersects(player.rightRec))
