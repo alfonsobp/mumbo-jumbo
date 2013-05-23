@@ -77,8 +77,95 @@ namespace MumboJumbo
         }
 
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime,Player player)
         {
+
+            foreach (WorldElement elem in elements)
+                if (elem.State)
+                {
+                    if (elem.Scalable)
+                    {
+
+                        if (elem.BlocksTop.Intersects(player.footBounds))
+                        {
+                            player.startY = player.worldPosition.Y;
+                            player.gravity = 0f;
+                            player.state = "stand";
+                        }
+                        if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Up))
+                        {
+                            player.gravity = 0f;
+                            player.worldPosition.Y -= 2f;
+                            player.cameraPosition.Y -= 2f;
+                            player.state = "stand";
+                        }
+                        if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Down))
+                        {
+                            if (elem.BlocksTop.Intersects(player.footBounds))
+                            {
+                                player.gravity = 0f;
+                                player.worldPosition.Y += 2f;
+                                player.cameraPosition.Y += 2f;
+                                player.state = "stand";
+                            }
+                        }
+                    }
+
+                    /*Interseccion de la parte de arriba del player parte de abajo de un elemento*/
+
+                    if (!elem.Scalable)
+                    {
+                        if (elem.BlocksBottom.Intersects(player.topBounds))
+                        {
+
+                            if ((player.topBounds.Y >= elem.BlocksBottom.Y))
+                            {
+                                player.gravity = 5f;
+                                player.jump = false;
+                                player.JumpSpeed = 0f;
+                                //player.startY=;
+                            }
+                        }
+
+                        /*Parte de abajo de player con parte de arriba de element*/
+                        if (elem.BlocksTop.Intersects(player.footBounds))
+                        {
+                            if (elem.Type == 5)
+                            {
+
+                                elem.State = false;
+
+                            }
+
+                            player.gravity = 0f;
+                            player.state = "stand";
+                            player.startY = player.worldPosition.Y;
+
+                            if (elem.Hurts)
+                                player.Life = false;
+                        }
+
+                        if (elem.BlocksLeft.Intersects(player.rightRec))
+                        {
+                            if (player.footBounds.Y >= elem.BlocksLeft.Y)
+                            {
+                                player.worldPosition.X -= 5f;
+                                player.cameraPosition.X -= 5f;
+                            }
+                        }
+
+                        if (elem.BlocksRight.Intersects(player.leftRec))
+                        {
+                            if (player.footBounds.Y >= elem.BlocksRight.Y)
+                            {
+                                player.worldPosition.X += 5f;
+                                player.cameraPosition.X += 5f;
+                            }
+                        }
+                    }
+
+                }
+
             foreach (Enemy e in enemies)
             {
                 if (e.IsAlive)

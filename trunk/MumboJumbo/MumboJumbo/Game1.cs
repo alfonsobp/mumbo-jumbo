@@ -161,7 +161,7 @@ namespace MumboJumbo
 
             }
 
-            WorldManager1.getCurrentWorld().Update(gameTime);
+            WorldManager1.getCurrentWorld().Update(gameTime,player);
             ScreenManager1.update(gameTime);
             WorldManager1.FinishLevel(player);
 
@@ -345,11 +345,12 @@ namespace MumboJumbo
 
         public void Collision()
         {
+            
 
-            /*Elementos colision*/
+            /*Elementos colision
             foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
                 if (elem.State)
-                    elem.collide(player);
+                    elem.collide(player);*/
 
 
              /*Enemigos colision*/
@@ -357,8 +358,6 @@ namespace MumboJumbo
                 foreach (Enemy e in WorldManager1.getCurrentWorld().enemies) 
                     if (e.IsAlive)
                         e.collide(player);
-                  
-        
 
             }
 

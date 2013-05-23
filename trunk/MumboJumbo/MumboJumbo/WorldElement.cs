@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework.Storage;
 
 
 enum property {SCALABLE =2,MOVIBLE=3,ACTIVABLE=4 , DESTRUIBLE=5 , HURTS=6 }
+
 namespace MumboJumbo
 {
 
@@ -68,6 +69,7 @@ namespace MumboJumbo
             if (type == (int)property.ACTIVABLE) activable = true;
             if (type == (int)property.DESTRUIBLE) destroyable = true;
             if (type == (int)property.HURTS) hurts = true;
+           
             this.astralObject = astralObject;
             if (astralObject) this.state = false;
 
