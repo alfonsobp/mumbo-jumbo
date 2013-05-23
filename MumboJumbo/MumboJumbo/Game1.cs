@@ -95,6 +95,7 @@ namespace MumboJumbo
 
         public KeyboardState keyPrevious;
         public KeyboardState key;
+
         protected override void Update(GameTime gameTime)
         {
           
@@ -177,8 +178,7 @@ namespace MumboJumbo
  
                 spaceBackground.Update(gameTime);
                 player.Update(gameTime);
-                Camera();
-                Collision();               
+                Camera();             
           }
 
 
@@ -223,7 +223,6 @@ namespace MumboJumbo
                 if (e.AstralObject == true)
                 {
                     e.State = false;
-                    //WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
                 }
 
             }
@@ -343,23 +342,6 @@ namespace MumboJumbo
             }
         }
 
-        public void Collision()
-        {
-            
-
-            /*Elementos colision
-            foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
-                if (elem.State)
-                    elem.collide(player);*/
-
-
-             /*Enemigos colision*/
-
-                foreach (Enemy e in WorldManager1.getCurrentWorld().enemies) 
-                    if (e.IsAlive)
-                        e.collide(player);
-
-            }
 
         private void InitiateSave()
         {
@@ -440,13 +422,8 @@ namespace MumboJumbo
 
         private void InitiateLoad()
         {
-
-
             device = null;
             StorageDevice.BeginShowSelector(PlayerIndex.One, this.LoadFromDevice, null);
-
-
-
         }
 
         void LoadFromDevice(IAsyncResult result)
@@ -500,8 +477,6 @@ namespace MumboJumbo
 
                 }
 
-
-
                 for (int i = 0; i < save.lstate.GetLength(0); i++)
                 {
 
@@ -512,8 +487,6 @@ namespace MumboJumbo
 
             }
         }
-
-
 
     }
 }
