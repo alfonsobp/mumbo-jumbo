@@ -80,6 +80,7 @@ namespace MumboJumbo
         public void Update(GameTime gameTime,Player player)
         {
 
+            /*colision de los elementos*/
             foreach (WorldElement elem in elements)
                 if (elem.State)
                 {
@@ -130,12 +131,6 @@ namespace MumboJumbo
                         /*Parte de abajo de player con parte de arriba de element*/
                         if (elem.BlocksTop.Intersects(player.footBounds))
                         {
-                            if (elem.Type == 5)
-                            {
-
-                                elem.State = false;
-
-                            }
 
                             player.gravity = 0f;
                             player.state = "stand";
@@ -166,16 +161,17 @@ namespace MumboJumbo
 
                 }
 
-            foreach (Enemy e in enemies)
-            {
-                if (e.IsAlive)
-                {
-                    e.Collide(elements);
-                    e.Update();
-                }
-            }
-
-
+             /*colision de los enemigos*/
+             foreach (Enemy e in enemies)
+	            {
+	                if (e.IsAlive)
+	                {
+                        e.collide(player);
+	                    e.Collide(elements);
+	                    e.Update();
+	                }
+	            }
+                    
         }
 
         public int CountEnemies()
@@ -190,7 +186,6 @@ namespace MumboJumbo
 
 
         }
-
 
         public void Draw(SpriteBatch sp)
         {
@@ -209,8 +204,6 @@ namespace MumboJumbo
                     e.Draw(sp, mapX);
                 }
         }
-
-
 
     }
 }

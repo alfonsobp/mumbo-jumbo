@@ -194,7 +194,6 @@ namespace MumboJumbo
              {
                         if (BlocksTop.Intersects(player.footBounds))
                         {
-
                             IsAlive = false;
                         }
 
