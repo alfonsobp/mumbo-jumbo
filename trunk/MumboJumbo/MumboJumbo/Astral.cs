@@ -36,7 +36,7 @@ namespace MumboJumbo
         private Rectangle rectangle;
         private Rectangle source;
 
-        public void load(Player p,TileMap m) {
+        public void load(Player p,World m) {
 
 
             p.cameraPosition = cameraPosition;
@@ -59,7 +59,7 @@ namespace MumboJumbo
         
         }
 
-        public void save(Player p,TileMap m) {
+        public void save(Player p,World m) {
 
         text = p.Texture;
         cameraPosition = p.cameraPosition;

@@ -33,6 +33,8 @@ namespace MumboJumbo
         ScreenManager ScreenManager1 = new ScreenManager();
         StorageDevice device;
 
+
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -94,18 +96,11 @@ namespace MumboJumbo
         public KeyboardState key;
         protected override void Update(GameTime gameTime)
         {
-
-            
-
-            
+          
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             keyPrevious = key;
             key = Keyboard.GetState();
-            
-            
-         
-
 
             if (key.IsKeyDown(Keys.A))
             {
@@ -121,10 +116,7 @@ namespace MumboJumbo
             {
                 OffAstralMode();
             }
-
-
-
-          
+     
 
             if ( keyPrevious.IsKeyUp(Keys.Escape) && key.IsKeyDown(Keys.Escape))
             {
@@ -139,7 +131,6 @@ namespace MumboJumbo
                
             }
 
-
             if (ScreenManager1.getIntermediateScreen().Save.clicked)
             {
                 if (!player.astralMode)
@@ -149,7 +140,6 @@ namespace MumboJumbo
                 }
                 ScreenManager1.getIntermediateScreen().Save.clicked = false;
             }
-
 
             if (ScreenManager1.getStartScreen().Load.clicked||ScreenManager1.getIntermediateScreen().Load.clicked)
             {
@@ -170,10 +160,8 @@ namespace MumboJumbo
 
             }
 
-
             WorldManager1.getCurrentWorld().Update(gameTime);
             ScreenManager1.update(gameTime);
-            ControlScreen();
             WorldManager1.FinishLevel(player);
 
             if (!ScreenManager1.getStartScreen().Enable && !ScreenManager1.getIntermediateScreen().Enable)
@@ -185,15 +173,12 @@ namespace MumboJumbo
                     started = true;
 
                 }
-
-                
+ 
                 spaceBackground.Update(gameTime);
                 player.Update(gameTime);
                 Camera();
-                Collision();
-               
-
-            }
+                Collision();               
+          }
 
 
             if (ScreenManager1.getStartScreen().Play.clicked)
@@ -209,6 +194,8 @@ namespace MumboJumbo
                 ScreenManager1.getIntermediateScreen().Resume.clicked = false;
             }
 
+            if (!player.Life)
+                ScreenManager1.getGameOver().Enable = true;
 
             if (ScreenManager1.getStartScreen().Exit.clicked||ScreenManager1.getIntermediateScreen().Exit.clicked)
             {
@@ -218,10 +205,6 @@ namespace MumboJumbo
             base.Update(gameTime);
         }
 
-        private void ControlScreen()
-        {
-            
-        }
 
         public void OffAstralMode()
         {
@@ -303,7 +286,11 @@ namespace MumboJumbo
                 ScreenManager1.getIntermediateScreen().Draw(spriteBatch);
             }
 
-          
+            if (ScreenManager1.getGameOver().Enable) {
+
+                ScreenManager1.getGameOver().Draw(spriteBatch);
+
+            }
 
             
 
@@ -361,19 +348,21 @@ namespace MumboJumbo
             foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
             {
 
-                if (elem.Scalable)
+                if (elem.Scalable && elem.State)
                 {
+
                     if (elem.BlocksTop.Intersects(player.footBounds))
                     {
                         player.startY = player.worldPosition.Y;
                         player.gravity = 0f;
-
+                        player.state = "stand";
                     }
                     if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Up))
                     {
                         player.gravity = 0f;
                         player.worldPosition.Y -= 2f;
                         player.cameraPosition.Y -= 2f;
+                        player.state = "stand";
                     }
                     if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Down))
                     {
@@ -382,11 +371,13 @@ namespace MumboJumbo
                             player.gravity = 0f;
                             player.worldPosition.Y += 2f;
                             player.cameraPosition.Y += 2f;
+                            player.state = "stand";
                         }
                     }
                 }
 
-                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.State)
+                /*Interseccion de la parte de arriba del player parte de abajo de un elemento*/
+                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.State && !elem.Scalable)
                 {
 
                     if ((player.topBounds.Y >= elem.BlocksBottom.Y))
@@ -398,7 +389,8 @@ namespace MumboJumbo
                     }
                 }
 
-                if (elem.BlocksTop.Intersects(player.footBounds) && elem.State)
+                /*Parte de abajo de player con parte de arriba de element*/
+                if (elem.BlocksTop.Intersects(player.footBounds) && elem.State && !elem.Scalable)
                 {
                     if (elem.Type == 5)
                     {
@@ -410,6 +402,9 @@ namespace MumboJumbo
                     player.gravity = 0f;
                     player.state = "stand";
                     player.startY = player.worldPosition.Y;
+
+                    if (elem.Hurts) 
+                        player.Life = false;
                 }
 
                 if (!elem.Scalable && elem.BlocksLeft.Intersects(player.rightRec) && elem.State)

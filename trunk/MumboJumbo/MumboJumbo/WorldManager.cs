@@ -12,13 +12,13 @@ namespace MumboJumbo
     {
        
         public  int level = 0;
-        public  TileMap[] ListMap;
+        public  World[] ListMap;
 
         public void Start(ContentManager ct)
         {
            /*Elementos de los mundos */
 
-            ListMap = new TileMap[2];
+            ListMap = new World[2];
 
             Texture2D tex0 = ct.Load<Texture2D>("in");
             Texture2D tex1 = ct.Load<Texture2D>("marioblock[1]");
@@ -81,7 +81,7 @@ namespace MumboJumbo
             };
 
 
-            TileMap map = new TileMap(MapWorld, astralObjects, ListaElem);
+            World map = new World(MapWorld, astralObjects, ListaElem);
             ListMap[0] = map;
 
            
@@ -114,7 +114,7 @@ namespace MumboJumbo
         
         }
 
-        public  TileMap getCurrentWorld() {
+        public  World getCurrentWorld() {
 
             return ListMap[level];
         }

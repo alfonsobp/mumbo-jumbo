@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace MumboJumbo
 {
-    class TileMap
+    class World
     {
         public int[,] tilemap;
         public int[,] astralObjects;
@@ -36,7 +36,7 @@ namespace MumboJumbo
             set { texlis = value; }
         }
 
-        public TileMap(int[,] a, int[,] b, List<Texture2D> texlis)
+        public World(int[,] a, int[,] b, List<Texture2D> texlis)
         {
             tilemap = a;
             astralObjects = b;

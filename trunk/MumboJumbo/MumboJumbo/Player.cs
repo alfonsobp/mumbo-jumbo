@@ -36,7 +36,12 @@ namespace MumboJumbo
         public string state;
         public bool jump;
         public float jumpSpeed;
-
+        Boolean life = true;
+        public Boolean Life
+        {
+            get { return life; }
+            set { life = value; }
+        }
 
         public float JumpSpeed
         {
