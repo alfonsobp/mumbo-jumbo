@@ -32,6 +32,7 @@ namespace MumboJumbo
         WorldManager WorldManager1 = new WorldManager();
         ScreenManager ScreenManager1 = new ScreenManager();
         StorageDevice device;
+        
 
 
 
@@ -345,91 +346,21 @@ namespace MumboJumbo
         public void Collision()
         {
 
+            /*Elementos colision*/
             foreach (WorldElement elem in WorldManager1.getCurrentWorld().elements)
-            {
+                if (elem.State)
+                    elem.collide(player);
 
-                if (elem.Scalable && elem.State)
-                {
 
-                    if (elem.BlocksTop.Intersects(player.footBounds))
-                    {
-                        player.startY = player.worldPosition.Y;
-                        player.gravity = 0f;
-                        player.state = "stand";
-                    }
-                    if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Up))
-                    {
-                        player.gravity = 0f;
-                        player.worldPosition.Y -= 2f;
-                        player.cameraPosition.Y -= 2f;
-                        player.state = "stand";
-                    }
-                    if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Down))
-                    {
-                        if (elem.BlocksTop.Intersects(player.footBounds))
-                        {
-                            player.gravity = 0f;
-                            player.worldPosition.Y += 2f;
-                            player.cameraPosition.Y += 2f;
-                            player.state = "stand";
-                        }
-                    }
-                }
+             /*Enemigos colision*/
 
-                /*Interseccion de la parte de arriba del player parte de abajo de un elemento*/
-                if (elem.BlocksBottom.Intersects(player.topBounds) && elem.State && !elem.Scalable)
-                {
+                foreach (Enemy e in WorldManager1.getCurrentWorld().enemies) 
+                    if (e.IsAlive)
+                        e.collide(player);
+                  
+        
 
-                    if ((player.topBounds.Y >= elem.BlocksBottom.Y))
-                    {
-                        player.gravity = 5f;
-                        player.jump = false;
-                        player.JumpSpeed = 0f;
-                        //player.startY=;
-                    }
-                }
-
-                /*Parte de abajo de player con parte de arriba de element*/
-                if (elem.BlocksTop.Intersects(player.footBounds) && elem.State && !elem.Scalable)
-                {
-                    if (elem.Type == 5)
-                    {
-                        elem.State = false;
-                        WorldManager1.getCurrentWorld().tilemap[elem.Y, elem.X] = 0;
-                        if (elem.AstralObject) WorldManager1.getCurrentWorld().astralObjects[elem.Y, elem.X] = 0;
-                    }
-
-                    player.gravity = 0f;
-                    player.state = "stand";
-                    player.startY = player.worldPosition.Y;
-
-                    if (elem.Hurts) 
-                        player.Life = false;
-                }
-
-                if (!elem.Scalable && elem.BlocksLeft.Intersects(player.rightRec) && elem.State)
-                {
-                    if (player.footBounds.Y >= elem.BlocksLeft.Y)
-                    {
-                        player.worldPosition.X -= 5f;
-                        player.cameraPosition.X -= 5f;
-                    }
-                }
-
-                if (!elem.Scalable && elem.BlocksRight.Intersects(player.leftRec) && elem.State)
-                {
-                    if (player.footBounds.Y >= elem.BlocksRight.Y)
-                    {
-                        player.worldPosition.X += 5f;
-                        player.cameraPosition.X += 5f;
-                    }
-                }
             }
-
-
-        }
-
-
 
         private void InitiateSave()
         {
