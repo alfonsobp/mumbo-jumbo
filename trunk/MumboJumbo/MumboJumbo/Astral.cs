@@ -51,6 +51,7 @@ namespace MumboJumbo
             p.frameSize = frameSize;
             p.currentFrame = currentFrame;
             p.pcolor = pcolor;
+            p.Life = true;
 
             m.mapX = mapX;
             m.MapW = mapW;
