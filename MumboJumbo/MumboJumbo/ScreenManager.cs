@@ -11,8 +11,13 @@ namespace MumboJumbo
     {
         StartMenuScreen StScreen=new StartMenuScreen();
         IntermediateScreen Iscreen= new IntermediateScreen();
+        GameOverScreen Oscreen = new GameOverScreen();
 
-        
+        public GameOverScreen getGameOver()
+        {
+            return Oscreen;
+        }
+
         public StartMenuScreen getStartScreen() {
             return StScreen;
         }
@@ -26,7 +31,7 @@ namespace MumboJumbo
 
             StScreen.LoadContent(device, ct);
             Iscreen.LoadContent(device, ct);
-
+            Oscreen.LoadContent(device, ct);
         
         }
 

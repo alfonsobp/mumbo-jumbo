@@ -40,6 +40,8 @@ namespace MumboJumbo
         private Boolean activable = false;
         private Boolean destroyable = false;
         private Boolean hurts = false;
+
+        
         
         /*Para la posicion en el mundo*/
         private int x;
@@ -68,6 +70,11 @@ namespace MumboJumbo
 
         }
 
+        public Boolean Hurts
+        {
+            get { return hurts; }
+            set { hurts = value; }
+        }
 
         public Boolean Scalable
         {

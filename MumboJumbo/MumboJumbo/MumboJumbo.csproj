@@ -110,6 +110,7 @@
     <Compile Include="AnimationSprite.cs" />
     <Compile Include="Button.cs" />
     <Compile Include="Astral.cs" />
+    <Compile Include="GameOverScreen.cs" />
     <Compile Include="IntermediateScreen.cs" />
     <Compile Include="MultiBackground.cs" />
     <Compile Include="Player.cs" />
@@ -119,7 +120,7 @@
     <Compile Include="Save.cs" />
     <Compile Include="ScreenManager.cs" />
     <Compile Include="StartMenuScreen.cs" />
-    <Compile Include="TileMap.cs" />
+    <Compile Include="World.cs" />
     <Compile Include="WorldElement.cs" />
     <Compile Include="WorldManager.cs" />
   </ItemGroup>
