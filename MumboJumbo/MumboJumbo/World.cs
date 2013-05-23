@@ -21,10 +21,11 @@ namespace MumboJumbo
         int tilesize;
         int mapSizeX;
         int mapSizeY;
-        int tileindex;
-        Texture2D tex;
+        
+        
         List<Texture2D> texlis;
         public List<WorldElement> elements;
+        public List<Enemy> enemies;
         public int mapX;
         public int MapW;
         public bool astralMode = false;
@@ -40,14 +41,11 @@ namespace MumboJumbo
         {
             tilemap = a;
             astralObjects = b;
-            this.texlis = texlis;
-
-
-            
-            
+            this.texlis = texlis;     
             mapSizeX = tilemap.GetLength(1);
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
+            enemies = new List<Enemy>();
 
             tilesize =Game1.graphics.PreferredBackBufferHeight/mapSizeY;
             mapX = 0;
@@ -56,25 +54,22 @@ namespace MumboJumbo
             {
                 for (int y = 0; y < mapSizeY; y++)
                 {
-                    if (tilemap[y, x] > 0)
+                    if (tilemap[y, x] > 0 && tilemap[y, x] < 7)
                     {
-                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize), tilemap[y, x], x, y, false));
+                        elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize),tilesize, tilemap[y, x], false,texlis[tilemap[y,x]]));
                     }
                     if (astralObjects[y, x] > 0)
                     {
-                        elements.Add(new WorldElement(new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize), astralObjects[y, x], x, y, true));
+                        elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize), tilesize, astralObjects[y, x], true, texlis[astralObjects[y, x]]));
+                    }
+
+                    if (tilemap[y, x] == 7) { 
+                    enemies.Add(new Enemy(new Vector2(x * tilesize - mapX, y * tilesize) , texlis[7],tilesize) );
                     }
                 }
             }
 
-            foreach (WorldElement elem in elements)
-            {
-
-                elem.BlocksTop = new Rectangle(elem.Block.Left + 2, elem.Block.Y, elem.Block.Width - 2, 6);
-                elem.BlocksBottom = new Rectangle(elem.Block.Left + 2, elem.Block.Bottom, elem.Block.Width - 2, elem.Block.Height / 2);
-                elem.BlocksLeft = new Rectangle(elem.Block.Left, elem.Block.Y, elem.Block.Width / 2, elem.Block.Height);
-                elem.BlocksRight = new Rectangle(elem.Block.Right, elem.Block.Y, 6, elem.Block.Height);   
-            }
+        
 
           
             MapW = tilesize * mapSizeX;
@@ -84,7 +79,14 @@ namespace MumboJumbo
 
         public void Update(GameTime gameTime)
         {
-
+            foreach (Enemy e in enemies)
+            {
+                if (e.IsAlive)
+                {
+                    e.Collide(elements);
+                    e.Update();
+                }
+            }
 
 
         }
@@ -94,45 +96,34 @@ namespace MumboJumbo
 
             int count = 0;
 
-            for (int i = 0; i < mapSizeX; i++)
-            {
-                for (int j = 0; j < mapSizeY; j++)
-                {
-                    tileindex = tilemap[j, i];
-
-                    if (tileindex >= 5)
-                        count++;
-
-
-
-                }
-
-            }
+            foreach (Enemy e in enemies)
+                if (e.IsAlive) count++;
 
             return count;
+
+
         }
 
 
         public void Draw(SpriteBatch sp)
         {
-            sp.Begin();
 
-            for (int i = 0; i < mapSizeX; i++)
+            foreach (WorldElement we in elements) 
             {
-                for (int j = 0; j < mapSizeY; j++)
+                if (we.State)
                 {
-                    tileindex = tilemap[j, i];
-                    int tileindex2 = astralObjects[j, i];
-                    tex = texlis[tileindex];
-                    Texture2D tex2 = texlis[tileindex2];
-                   
-                    sp.Draw(tex, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.White);
-                    if (astralMode) sp.Draw(tex2, new Rectangle(i * tilesize - mapX, j * tilesize, tilesize, tilesize), Color.Red);
-
+                    we.Draw(sp, mapX, astralMode);
                 }
-
             }
-            sp.End();
+
+            foreach (Enemy e in enemies)
+                if (e.IsAlive)
+                {
+                    e.Draw(sp, mapX);
+                }
         }
+
+
+
     }
 }
