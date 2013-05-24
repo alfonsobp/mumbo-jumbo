@@ -139,6 +139,7 @@ namespace MumboJumbo
                             if (elem.Hurts)
                             {
                                 player.resetPlayer();
+                                mapX = 0;
                                 player.Lives -= 1;
                                
                                 
@@ -171,7 +172,52 @@ namespace MumboJumbo
 	            {
 	                if (e.IsAlive)
 	                {
-                        e.collide(player);
+                        {
+                            if (e.BlocksTop.Intersects(player.footBounds))
+                            {
+                                e.IsAlive = false;
+                            }
+
+                            if (e.BlocksRight.Intersects(player.leftRec))
+                            {
+                                if (player.footBounds.Y >= e.BlocksRight.Y)
+                                {
+
+
+
+                                    e.worldPosition.X += 15f;
+                                    player.worldPosition.X -= 5f;
+                                    player.cameraPosition.X -= 5f;
+                                    mapX = 0;
+                                    player.resetPlayer();
+                                    player.Lives -= 1;
+
+                                }
+
+                            }
+
+                            if (e.BlocksLeft.Intersects(player.rightRec))
+                            {
+                                if (player.footBounds.Y >= e.BlocksLeft.Y)
+                                {
+
+
+
+                                    e.worldPosition.X -= 15f;
+                                    player.worldPosition.X += 5f;
+                                    player.cameraPosition.X += 5f;
+                                    mapX = 0;
+                                    player.resetPlayer();
+                                    player.Lives -= 1;
+
+                                }
+                            }
+
+
+
+                        }
+
+
 	                    e.Collide(elements);
 	                    e.Update();
 	                }

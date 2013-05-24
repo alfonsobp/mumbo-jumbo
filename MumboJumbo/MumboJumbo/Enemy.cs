@@ -201,55 +201,7 @@ namespace MumboJumbo
 
         }
 
-        public void collide(Player player){
-        
-             {
-                        if (BlocksTop.Intersects(player.footBounds))
-                        {
-                            IsAlive = false;
-                        }
-
-                        if (BlocksRight.Intersects(player.leftRec))
-                        {
-                            if (player.footBounds.Y >= BlocksRight.Y)
-                            {
-                                
-                                
-
-                                worldPosition.X += 15f;
-                                player.worldPosition.X -= 5f;
-                                player.cameraPosition.X -= 5f;
-
-                                player.resetPlayer();
-                                player.Lives -= 1;
-                                
-                            }
-                            
-                        }
-
-                        if (BlocksLeft.Intersects(player.rightRec))
-                        {
-                            if (player.footBounds.Y >= BlocksLeft.Y)
-                            {
-                                
-                                
-
-                                worldPosition.X -= 15f;
-                                player.worldPosition.X += 5f;
-                                player.cameraPosition.X += 5f;
-
-                                player.resetPlayer();
-                                player.Lives -= 1;
-                                
-                            }
-                        }
-
-
-
-                    }
-                
-        
-        }
+       
     }
 
 }
