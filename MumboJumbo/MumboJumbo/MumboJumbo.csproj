@@ -126,8 +126,10 @@
     <Compile Include="WorldManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AstralBar.png" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="LifeBar.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MumboJumboContent\MumboJumboContent.contentproj">

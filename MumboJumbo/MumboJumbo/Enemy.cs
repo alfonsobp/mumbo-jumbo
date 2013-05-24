@@ -213,12 +213,16 @@ namespace MumboJumbo
                         {
                             if (player.footBounds.Y >= BlocksRight.Y)
                             {
-                                player.Life = false;
-                                player.Lives -= 1;
+                                
+                                
 
                                 worldPosition.X += 15f;
                                 player.worldPosition.X -= 5f;
                                 player.cameraPosition.X -= 5f;
+
+                                player.resetPlayer();
+                                player.Lives -= 1;
+                                
                             }
                             
                         }
@@ -227,12 +231,16 @@ namespace MumboJumbo
                         {
                             if (player.footBounds.Y >= BlocksLeft.Y)
                             {
-                                player.Life = false;
-                                player.Lives -= 1;
+                                
+                                
 
                                 worldPosition.X -= 15f;
                                 player.worldPosition.X += 5f;
                                 player.cameraPosition.X += 5f;
+
+                                player.resetPlayer();
+                                player.Lives -= 1;
+                                
                             }
                         }
 

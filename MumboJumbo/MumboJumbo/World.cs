@@ -138,9 +138,10 @@ namespace MumboJumbo
 
                             if (elem.Hurts)
                             {
-                                player.Life = false;
-                                player.Lives -= 1;
                                 player.resetPlayer();
+                                player.Lives -= 1;
+                               
+                                
                             }
                         }
 
