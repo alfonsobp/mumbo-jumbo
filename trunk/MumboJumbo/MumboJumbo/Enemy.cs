@@ -81,7 +81,7 @@ namespace MumboJumbo
 
             /*Cambio la direccion de movimientos*/
 
-            if (NumberMoves == current_num_move)
+            if (NumberMoves <= current_num_move)
             {
                 current_num_move = 0;
 
@@ -148,7 +148,15 @@ namespace MumboJumbo
         {
 
             batch.Begin();
-            batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), Color.White);
+
+            if (move_face == (int)moving.RIGHT || move_face == (int)moving.JUMP)
+                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+
+            if (move_face == (int)moving.LEFT || move_face == (int)moving.JUMP_DOWN)
+                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+
+            //batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size),Color.White);
+
             batch.End();
 
         }
@@ -163,23 +171,27 @@ namespace MumboJumbo
                         if (elem.BlocksLeft.Intersects(this.blocksRight))
                         {
                             worldPosition -= new Vector2(5f, 0f);
+                            current_num_move = NumberMoves;
 
                         }
 
                         if (elem.BlocksRight.Intersects(this.blocksLeft))
                         {
                             worldPosition += new Vector2(5f, 0f);
+                            current_num_move = NumberMoves;
 
                         }
 
                         if (elem.BlocksTop.Intersects(this.blocksBottom))
                         {
                             worldPosition -= new Vector2(0f, 5f);
+                            current_num_move = NumberMoves;
                         }
 
                         if (elem.BlocksBottom.Intersects(this.blocksTop))
                         {
                             worldPosition += new Vector2(0f, 5f);
+                            current_num_move = NumberMoves;
                         }
 
 
@@ -199,25 +211,29 @@ namespace MumboJumbo
 
                         if (BlocksRight.Intersects(player.leftRec))
                         {
-                            player.Life = false;
-                            player.Lives -= 1;
-                            
-                            worldPosition.X += 15f;
-                            player.worldPosition.X -= 5f;
-                            player.cameraPosition.X -= 5f;
-                            
+                            if (player.footBounds.Y >= BlocksRight.Y)
+                            {
+                                player.Life = false;
+                                player.Lives -= 1;
+
+                                worldPosition.X += 15f;
+                                player.worldPosition.X -= 5f;
+                                player.cameraPosition.X -= 5f;
+                            }
                             
                         }
 
                         if (BlocksLeft.Intersects(player.rightRec))
                         {
-                            player.Life = false;
-                            player.Lives -= 1;
-      
-                            worldPosition.X -= 15f;
-                            player.worldPosition.X += 5f;
-                            player.cameraPosition.X += 5f;
-                           
+                            if (player.footBounds.Y >= BlocksLeft.Y)
+                            {
+                                player.Life = false;
+                                player.Lives -= 1;
+
+                                worldPosition.X -= 15f;
+                                player.worldPosition.X += 5f;
+                                player.cameraPosition.X += 5f;
+                            }
                         }
 
 
