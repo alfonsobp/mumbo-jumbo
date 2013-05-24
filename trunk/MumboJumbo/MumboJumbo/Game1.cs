@@ -33,7 +33,7 @@ namespace MumboJumbo
         WorldManager WorldManager1 = new WorldManager();
         ScreenManager ScreenManager1 = new ScreenManager();
         StorageDevice device;
-        
+        static public double TimeInAstral=0;
 
 
 
@@ -65,9 +65,9 @@ namespace MumboJumbo
         {
            
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            player = new Player();
-            Texture2D tex = Content.Load<Texture2D>("Mumbo_SpSheets");
-            player.LoadContent(tex);
+            player = new Player(Content);
+            
+            
            
             /*Manejador de ventanas*/
             ScreenManager1.CreateScreens(graphics,Content);
@@ -116,8 +116,8 @@ namespace MumboJumbo
                 }
 
             }
-
-            if (AstralMode && gameTime.TotalGameTime.TotalSeconds - timeElap >= 5)
+            TimeInAstral = gameTime.TotalGameTime.TotalSeconds - timeElap;
+            if (AstralMode && TimeInAstral >= 5)
             {
                 OffAstralMode();
             }

@@ -23,6 +23,8 @@ namespace MumboJumbo
             get { return texture; }
             set { texture = value; }
         }
+        public Texture2D barLife;
+        public Texture2D barAstral;
         public Vector2 cameraPosition;
         public Vector2 worldPosition;
         public Rectangle rectangle;
@@ -37,7 +39,7 @@ namespace MumboJumbo
         public bool jump;
         public float jumpSpeed;
         Boolean life = true;
-        int lives = 3;
+        int lives = 5;
 
         public int Lives
         {
@@ -69,10 +71,10 @@ namespace MumboJumbo
         float interval;
         public Color pcolor = Color.White;
         public bool astralMode = false;
-        
 
 
-        public Player()
+
+        public Player(ContentManager ct)
         {
             cameraPosition = new Vector2(0, 0);
             worldPosition = new Vector2(0, 0);
@@ -89,14 +91,14 @@ namespace MumboJumbo
             time = 0f;
             interval = 100f;
 
+            Texture = ct.Load<Texture2D>("Mumbo_SpSheets");
+            barAstral = ct.Load<Texture2D>("AstralBar");
+            barLife = ct.Load<Texture2D>("LifeBar");
+
 
         }
 
-        public void LoadContent(Texture2D tex)
-        {
-
-            texture = tex;
-        }
+       
 
         public void resetPlayer()
         {
@@ -114,6 +116,12 @@ namespace MumboJumbo
             this.sheetSize = new Point(6, 7);
             this.currentFrame = new Point(0, 0);
             this.time = 0f;
+
+            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 20, 25);
+            footBounds = new Rectangle(rectangle.X, rectangle.Center.Y, rectangle.Width - 3, rectangle.Height / 2);
+            rightRec = new Rectangle(rectangle.Right - 3, rectangle.Y, 3, rectangle.Height);
+            leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
+            topBounds = new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 3, 3);
         }
 
 
@@ -251,6 +259,33 @@ namespace MumboJumbo
             }
 
             sp.End();
+
+            DrawPanel(sp);
+        }
+
+        public void DrawPanel(SpriteBatch sp) {
+            sp.Begin();
+
+            Point frameSizeBar = new Point(20, 35);
+            Rectangle sourceBar = new Rectangle( 23, 8, frameSizeBar.X, frameSizeBar.Y);
+            sp.Draw(texture,Vector2.Zero + new Vector2(0,15), sourceBar, Color.White, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+            sp.Draw(texture, Vector2.Zero + new Vector2(0,60), sourceBar, Color.Red, 0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0);
+
+            for (int i = 0; i <  lives; i++) { 
+            sp.Draw(barLife,new Rectangle(i* barLife.Width+30 , 30,barLife.Width,barLife.Height),Color.White);
+            }
+
+            if (this.astralMode)
+            {
+                int timeAstral = Math.Max((int)(5 - Game1.TimeInAstral), 0);
+                for (int i = 0; i < timeAstral; i++)
+                {
+                    sp.Draw(barAstral, new Rectangle(i * barAstral.Width + 30, 75, barAstral.Width, barAstral.Height), Color.White);
+                }
+            }
+
+            sp.End();
+        
         }
 
 
