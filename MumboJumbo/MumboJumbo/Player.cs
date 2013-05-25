@@ -287,7 +287,7 @@ namespace MumboJumbo
 
             if (this.astralMode)
             {
-                int timeAstral = Math.Max((int)(5 - Game1.TimeInAstral), 0);
+                int timeAstral = Math.Max((int)(5 - World.TimeInAstral), 0);
                 for (int i = 0; i < timeAstral; i++)
                 {
                     sp.Draw(barAstral, new Rectangle(i * barAstral.Width + 30, 75, barAstral.Width, barAstral.Height), Color.White);
