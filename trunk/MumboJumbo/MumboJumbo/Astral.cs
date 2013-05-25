@@ -27,7 +27,7 @@ namespace MumboJumbo
         public  Point frameSize;
       
         public  Point currentFrame;
-        public  Color pcolor;
+        
         public int mapX;
         public int mapW;
         public Texture2D text;
@@ -50,7 +50,7 @@ namespace MumboJumbo
             p.prevstate = prevstate;
             p.frameSize = frameSize;
             p.currentFrame = currentFrame;
-            p.pcolor = pcolor;
+            
             p.Life = true;
 
             m.mapX = mapX;
@@ -74,7 +74,7 @@ namespace MumboJumbo
         prevstate=p.prevstate;
         frameSize=p.frameSize;       
         currentFrame =p.currentFrame;
-        pcolor = p.pcolor;
+        
 
         mapX = m.mapX;
         mapW = m.MapW;

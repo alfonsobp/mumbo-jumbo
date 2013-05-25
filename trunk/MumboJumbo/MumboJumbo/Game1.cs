@@ -400,7 +400,7 @@ namespace MumboJumbo
                     prevstate = player.prevstate,
                     frameSize = player.frameSize,
                     currentFrame = player.currentFrame,
-                    pcolor = player.pcolor,
+                  
                     level = WorldManager1.level,
                     tilemap = convertion,
                     mapX = WorldManager1.getCurrentWorld().mapX,
@@ -461,7 +461,7 @@ namespace MumboJumbo
                 player.prevstate = save.prevstate;
                 player.frameSize = save.frameSize;
                 player.currentFrame = save.currentFrame;
-                player.pcolor = save.pcolor;
+                
                 WorldManager1.level = save.level;
 
                 WorldManager1.getCurrentWorld().mapX = save.mapX;
