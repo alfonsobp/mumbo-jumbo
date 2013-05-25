@@ -101,39 +101,25 @@ namespace MumboJumbo
 
         protected override void Update(GameTime gameTime)
         {
-          
+
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
             keyPrevious = key;
             key = Keyboard.GetState();
 
-            if (key.IsKeyDown(Keys.A))
-            {
-                if (!AstralMode)
-                {
-                    OnAstralMode();
-                    timeElap = gameTime.TotalGameTime.TotalSeconds;
-                }
 
-            }
-            TimeInAstral = gameTime.TotalGameTime.TotalSeconds - timeElap;
-            if (AstralMode && TimeInAstral >= 5)
-            {
-                OffAstralMode();
-            }
-     
-
-            if ( keyPrevious.IsKeyUp(Keys.Escape) && key.IsKeyDown(Keys.Escape))
+            if (keyPrevious.IsKeyUp(Keys.Escape) && key.IsKeyDown(Keys.Escape))
             {
                 if (!ScreenManager1.getIntermediateScreen().Enable)
                 {
                     ScreenManager1.getIntermediateScreen().Enable = true;
                 }
-                else {
+                else
+                {
                     ScreenManager1.getIntermediateScreen().Enable = false;
-                        
+
                 }
-               
+
             }
 
             if (ScreenManager1.getIntermediateScreen().Save.clicked)
@@ -141,12 +127,12 @@ namespace MumboJumbo
                 if (!player.astralMode)
                 {
                     InitiateSave();
-                    
+
                 }
                 ScreenManager1.getIntermediateScreen().Save.clicked = false;
             }
 
-            if (ScreenManager1.getStartScreen().Load.clicked||ScreenManager1.getIntermediateScreen().Load.clicked)
+            if (ScreenManager1.getStartScreen().Load.clicked || ScreenManager1.getIntermediateScreen().Load.clicked)
             {
 
                 InitiateLoad();
@@ -157,19 +143,25 @@ namespace MumboJumbo
                     ScreenManager1.getStartScreen().Play.clicked = true;
                 }
 
-                if (ScreenManager1.getIntermediateScreen().Load.clicked) {
+                if (ScreenManager1.getIntermediateScreen().Load.clicked)
+                {
                     ScreenManager1.getIntermediateScreen().Load.clicked = false;
                     ScreenManager1.getIntermediateScreen().Resume.clicked = true;
-                
+
                 }
 
             }
 
-            WorldManager1.getCurrentWorld().Update(gameTime,player);
+            WorldManager1.getCurrentWorld().Update(gameTime, player);
             ScreenManager1.update(gameTime);
+
             int lvlAnt = WorldManager1.level;
             WorldManager1.FinishLevel(player);
-            if (WorldManager1.level>lvlAnt) playerIni.save(player, WorldManager1.getCurrentWorld());
+
+            if (WorldManager1.level > lvlAnt)
+            {
+                playerIni.load(player, WorldManager1.getCurrentWorld());
+            }
 
             if (!ScreenManager1.getStartScreen().Enable && !ScreenManager1.getIntermediateScreen().Enable)
             {
@@ -180,11 +172,11 @@ namespace MumboJumbo
                     started = true;
 
                 }
- 
+
                 spaceBackground.Update(gameTime);
                 player.Update(gameTime);
-                Camera();             
-          }
+                Camera();
+            }
 
 
             if (ScreenManager1.getStartScreen().Play.clicked)
@@ -200,71 +192,23 @@ namespace MumboJumbo
                 ScreenManager1.getIntermediateScreen().Resume.clicked = false;
             }
 
-            if (player.Lives==0)
+            if (player.Lives == 0)
                 ScreenManager1.getGameOver().Enable = true;
-            if (!player.Life)
-                playerIni.load(player, WorldManager1.getCurrentWorld());
 
-            if (ScreenManager1.getStartScreen().Exit.clicked||ScreenManager1.getIntermediateScreen().Exit.clicked)
+            if (!player.Life)
+            {
+                playerIni.load(player, WorldManager1.getCurrentWorld());
+            }
+
+            if (ScreenManager1.getStartScreen().Exit.clicked || ScreenManager1.getIntermediateScreen().Exit.clicked)
             {
                 this.Exit();
             }
-         
+
             base.Update(gameTime);
         }
 
-
-        public void OffAstralMode()
-        {
-            WorldManager1.getCurrentWorld().astralMode = false;
-            AstralMode = false;
-            player.astralMode = false;
-
-            /*Devolver los valores que cambiaste en astralMode*/
-
-            current.load(player, WorldManager1.getCurrentWorld());
-
-            /*Cambiar de estado a todos los elementos*/
-            foreach (WorldElement e in WorldManager1.getCurrentWorld().elements)
-            {
-                if (e.AstralObject == true)
-                {
-                    e.State = false;
-                }
-
-            }
-
-
-        }
-
-        public void OnAstralMode()
-        {
-            WorldManager1.getCurrentWorld().astralMode = true;
-            AstralMode = true;
-            player.astralMode = true;
-
-            /*Guardar en Current las posiciones en el momento de hacer astralMode*/
-
-            current.save(player, WorldManager1.getCurrentWorld());
-
-            /*Cambiar el estado a todos los elementos */
-            foreach (WorldElement e in WorldManager1.getCurrentWorld().elements)
-            {
-                if (e.AstralObject == true)
-                {
-
-                    e.State = true;
-                    // WorldManager1.getCurrentWorld().tilemap[e.Y, e.X] = e.Type;
-                }
-
-            }
-
-
-
-        }
-
-
-      
+  
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -274,7 +218,6 @@ namespace MumboJumbo
             {
                 spaceBackground.Draw();
                 WorldManager1.getCurrentWorld().Draw(spriteBatch);
-                current.draw(spriteBatch, WorldManager1.getCurrentWorld().mapX);
                 player.Draw(spriteBatch);
                 
             }

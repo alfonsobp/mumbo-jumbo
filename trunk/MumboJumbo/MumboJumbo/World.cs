@@ -21,7 +21,7 @@ namespace MumboJumbo
         int tilesize;
         int mapSizeX;
         int mapSizeY;
-        
+        Astral current = new Astral();
         
         List<Texture2D> texlis;
         public List<WorldElement> elements;
@@ -29,6 +29,10 @@ namespace MumboJumbo
         public int mapX;
         public int MapW;
         public bool astralMode = false;
+        double timeElap;
+        public KeyboardState keyPrevious;
+        public KeyboardState key;
+        static public double TimeInAstral=0;
         
 
         public List<Texture2D> Texlis
@@ -79,6 +83,24 @@ namespace MumboJumbo
 
         public void Update(GameTime gameTime,Player player)
         {
+
+            keyPrevious = key;
+            key = Keyboard.GetState();
+
+            if (key.IsKeyDown(Keys.A))
+            {
+                if (!astralMode)
+                {
+                    OnAstralMode(player);
+                    timeElap = gameTime.TotalGameTime.TotalSeconds;
+                }
+
+            }
+            TimeInAstral = gameTime.TotalGameTime.TotalSeconds - timeElap;
+            if (astralMode && TimeInAstral >= 5)
+            {
+                OffAstralMode(player);
+            }
 
             /*colision de los elementos*/
             foreach (WorldElement elem in elements)
@@ -138,11 +160,13 @@ namespace MumboJumbo
 
                             if (elem.Hurts)
                             {
-                                player.resetPlayer();
-                                mapX = 0;
-                                player.Lives -= 1;
-                               
-                                
+                                if (!player.astralMode)
+                                {
+                                    player.Life = false;
+                                    player.Lives -= 1;
+                                }
+                                else
+                                    OffAstralMode(player);
                             }
                         }
 
@@ -166,64 +190,160 @@ namespace MumboJumbo
                     }
 
                 }
-
-             /*colision de los enemigos*/
-             foreach (Enemy e in enemies)
-	            {
-	                if (e.IsAlive)
-	                {
-                        {
-                            if (e.BlocksTop.Intersects(player.footBounds))
-                            {
-                                e.IsAlive = false;
-                            }
-
-                            if (e.BlocksRight.Intersects(player.leftRec))
-                            {
-                                if (player.footBounds.Y >= e.BlocksRight.Y)
-                                {
-
-
-
-                                    e.worldPosition.X += 15f;
-                                    player.worldPosition.X -= 5f;
-                                    player.cameraPosition.X -= 5f;
-                                    mapX = 0;
-                                    player.resetPlayer();
-                                    player.Lives -= 1;
-
-                                }
-
-                            }
-
-                            if (e.BlocksLeft.Intersects(player.rightRec))
-                            {
-                                if (player.footBounds.Y >= e.BlocksLeft.Y)
-                                {
-
-
-
-                                    e.worldPosition.X -= 15f;
-                                    player.worldPosition.X += 5f;
-                                    player.cameraPosition.X += 5f;
-                                    mapX = 0;
-                                    player.resetPlayer();
-                                    player.Lives -= 1;
-
-                                }
-                            }
-
-
-
-                        }
-
-
-	                    e.Collide(elements);
-	                    e.Update();
-	                }
-	            }
-                    
+            /*colision de los enemigos*/
+            foreach (Enemy e in enemies)
+            {
+                if (e.IsAlive)
+                {
+                    collide(e, player);
+                    Collide(e, elements);
+                    e.Update();
+                }
+            }
+             
+              
         }
+
+
+        public void collide(Enemy e, Player player)
+        {
+
+            {
+                if (e.BlocksTop.Intersects(player.footBounds))
+                {
+                    e.IsAlive = false;
+                }
+
+                if (e.BlocksRight.Intersects(player.leftRec))
+                {
+                    if (player.footBounds.Y >= e.BlocksRight.Y)
+                    {
+
+                        if (!astralMode)
+                        {
+                            player.Life = false;
+                            player.Lives -= 1;
+                        }
+                        else
+                            OffAstralMode(player);
+
+
+                        e.worldPosition.X += 15f;
+                        player.worldPosition.X -= 5f;
+                        player.cameraPosition.X -= 5f;
+                        
+
+                    }
+
+                }
+
+                if (e.BlocksLeft.Intersects(player.rightRec))
+                {
+                    if (player.footBounds.Y >= e.BlocksLeft.Y)
+                    {
+
+                        if (!astralMode)
+                        {
+                            player.Life = false;
+                            player.Lives -= 1;
+                        }
+                        else
+                            OffAstralMode(player);
+
+                        e.worldPosition.X -= 15f;
+                        player.worldPosition.X += 5f;
+                        player.cameraPosition.X += 5f;
+                        
+
+                    }
+                }
+            }
+        }
+
+        public void Collide(Enemy e,List<WorldElement> elements)
+        {
+
+            foreach (WorldElement elem in elements)
+                if (elem.State)
+                {
+
+                    if (elem.BlocksLeft.Intersects(e.BlocksRight))
+                    {
+                        e.worldPosition -= new Vector2(5f, 0f);
+                        e.current_num_move = e.NumberMoves;
+
+                    }
+
+                    if (elem.BlocksRight.Intersects(e.BlocksLeft))
+                    {
+                        e.worldPosition += new Vector2(5f, 0f);
+                        e.current_num_move = e.NumberMoves;
+
+                    }
+
+                    if (elem.BlocksTop.Intersects(e.BlocksBottom))
+                    {
+                        e.worldPosition -= new Vector2(0f, 5f);
+                        e.current_num_move = e.NumberMoves;
+                    }
+
+                    if (elem.BlocksBottom.Intersects(e.BlocksTop))
+                    {
+                        e.worldPosition += new Vector2(0f, 5f);
+                        e.current_num_move = e.NumberMoves;
+                    }
+
+
+
+
+                }
+
+        }
+
+        public void OffAstralMode(Player player)
+        {
+            astralMode = false;
+            player.astralMode = false;
+
+            /*Devolver los valores que cambiaste en astralMode*/
+
+            current.load(player, this);
+
+            /*Cambiar de estado a todos los elementos*/
+            foreach (WorldElement e in elements)
+            {
+                if (e.AstralObject == true)
+                {
+                    e.State = false;
+                }
+
+            }
+        }
+
+        public void OnAstralMode(Player player)
+        {
+            astralMode = true;
+
+            player.astralMode = true;
+
+            /*Guardar en Current las posiciones en el momento de hacer astralMode*/
+
+            current.save(player, this);
+
+            /*Cambiar el estado a todos los elementos */
+            foreach (WorldElement e in elements)
+            {
+                if (e.AstralObject == true)
+                {
+                    e.State = true;
+
+                }
+
+            }
+
+
+        }
+
 
         public int CountEnemies()
         {
@@ -241,6 +361,7 @@ namespace MumboJumbo
         public void Draw(SpriteBatch sp)
         {
 
+            if (astralMode) current.draw(sp, mapX);
             foreach (WorldElement we in elements) 
             {
                 if (we.State)

@@ -49,11 +49,12 @@ namespace MumboJumbo
         }
 
      
-        int current_num_move = 0;
-        int NumberMoves = 50;
-        int move_face;
-        bool isAlive = true;
-        int size;
+        public int current_num_move = 0;
+        public int NumberMoves = 50;
+        public int move_face;
+        public bool isAlive = true;
+        public int size;
+
         public bool IsAlive
         {
             get { return isAlive; }
@@ -136,12 +137,6 @@ namespace MumboJumbo
 
             current_num_move++;
 
-
-
-            // for (int i = 0; i < 500; i++) ;
-
-
-
         }
 
         public void Draw(SpriteBatch batch, int move)
@@ -161,47 +156,6 @@ namespace MumboJumbo
 
         }
 
-        public void Collide(List<WorldElement> elements)
-        {
-
-            foreach (WorldElement elem in elements)
-                if(elem.State)
-                    {
-
-                        if (elem.BlocksLeft.Intersects(this.blocksRight))
-                        {
-                            worldPosition -= new Vector2(5f, 0f);
-                            current_num_move = NumberMoves;
-
-                        }
-
-                        if (elem.BlocksRight.Intersects(this.blocksLeft))
-                        {
-                            worldPosition += new Vector2(5f, 0f);
-                            current_num_move = NumberMoves;
-
-                        }
-
-                        if (elem.BlocksTop.Intersects(this.blocksBottom))
-                        {
-                            worldPosition -= new Vector2(0f, 5f);
-                            current_num_move = NumberMoves;
-                        }
-
-                        if (elem.BlocksBottom.Intersects(this.blocksTop))
-                        {
-                            worldPosition += new Vector2(0f, 5f);
-                            current_num_move = NumberMoves;
-                        }
-
-
-
-
-                    }
-
-        }
-
-       
     }
 
 }
