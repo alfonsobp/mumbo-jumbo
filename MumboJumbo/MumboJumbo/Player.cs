@@ -69,7 +69,8 @@ namespace MumboJumbo
         public Point currentFrame;
         public Rectangle source;
         float interval;
-        public Color pcolor = Color.White;
+        public Vector2 prevPosition;
+       
         public bool astralMode = false;
 
 
@@ -130,6 +131,7 @@ namespace MumboJumbo
             time += (float)gt.ElapsedGameTime.TotalSeconds;
             oldkeys = keystate;
             keystate = Keyboard.GetState();
+            prevPosition = cameraPosition;
             cameraPosition.Y += gravity;
             worldPosition.Y += gravity;
 
@@ -238,6 +240,8 @@ namespace MumboJumbo
             leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
             topBounds = new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 3, 3);
 
+            
+
         }
 
 
@@ -246,17 +250,23 @@ namespace MumboJumbo
         {
             sp.Begin();
 
-            pcolor = (astralMode) ? Color.Red : Color.White;
+            Color color = (astralMode) ? Color.Red : Color.White;
 
-            if (facing == "right")
-            {
-                sp.Draw(texture, cameraPosition, source, pcolor, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.None, 0);
-            }
 
-            if (facing == "left")
-            {
-                sp.Draw(texture, cameraPosition, source, pcolor, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.FlipHorizontally, 0);
-            }
+                if (facing == "right")
+                {
+                   
+                        sp.Draw(texture, cameraPosition, source, color, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.None, 0);
+                    
+                }
+
+                if (facing == "left")
+                {
+                   
+                    sp.Draw(texture, cameraPosition, source, color, 0f, new Vector2(rectangle.Width / 2, rectangle.Height / 2), 1.0f, SpriteEffects.FlipHorizontally, 0);
+                }
+
+              
 
             sp.End();
 
