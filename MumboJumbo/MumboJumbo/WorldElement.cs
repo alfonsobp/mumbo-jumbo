@@ -23,7 +23,7 @@ namespace MumboJumbo
     {
 
       
-        private Vector2 position;
+        public Vector2 position;
         private Texture2D spriteObject;
         private Vector2 spriteOrigin;
         private int type;
@@ -45,7 +45,10 @@ namespace MumboJumbo
         private Boolean hurts = false;
         private Texture2D texture;
         private int size;
-        
+
+        public List<WorldElement> activableElemPos = new List<WorldElement>();
+
+
       
 
         public WorldElement()
@@ -128,11 +131,11 @@ namespace MumboJumbo
             set { block = value; }
         }
 
-        public Vector2 Position
+        /*public Vector2 Position
         {
             get { return position; }
             set { position = value; }
-        }
+        }*/
 
         public Texture2D SpriteObject
         {
