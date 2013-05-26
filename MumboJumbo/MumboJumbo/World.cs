@@ -92,22 +92,25 @@ namespace MumboJumbo
 
             mapSizeX = activableElems.GetLength(1);
             mapSizeY = activableElems.GetLength(0);
-
-            for (int x = 0; x < mapSizeX; x++)
-                for (int y = 0; y < mapSizeY; y++) {
-                    if (activableElems[y,x]>0) {
-
-                        foreach (WorldElement k in elements)
+            if (auxActivableElem.Count() > 0)
+            {
+                for (int x = 0; x < mapSizeX; x++)
+                    for (int y = 0; y < mapSizeY; y++)
+                    {
+                        if (activableElems[y, x] > 0)
                         {
-                            if ((k.position.X == x * tilesize) && (k.position.Y == y * tilesize))
-                            {
-                                auxActivableElem[activableElems[y, x] - 1].activableElemPos.Add(k);
-                            }
 
+                            foreach (WorldElement k in elements)
+                            {
+                                if ((k.position.X == x * tilesize) && (k.position.Y == y * tilesize))
+                                {
+                                    auxActivableElem[activableElems[y, x] - 1].activableElemPos.Add(k);
+                                }
+
+                            }
                         }
                     }
-                }
-
+            }
         
 
           
