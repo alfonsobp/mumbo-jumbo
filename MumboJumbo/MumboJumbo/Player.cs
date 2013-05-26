@@ -163,6 +163,11 @@ namespace MumboJumbo
                 state = "stand";
             }
 
+            if (oldkeys.IsKeyDown(Keys.Up) && !keystate.IsKeyDown(Keys.Up))
+            {
+                state = "stand";
+            }
+
 
             if (state == "stand")
             {
@@ -190,7 +195,10 @@ namespace MumboJumbo
                 StandAnimation();
             }
 
-
+            if (state == "upOrDown")
+            {
+                UpDownAnimation(gt);
+            }
 
             if (jump)
             {
@@ -298,8 +306,6 @@ namespace MumboJumbo
         
         }
 
-
-
         public void MoveAnimation(GameTime gt)
         {
 
@@ -343,6 +349,30 @@ namespace MumboJumbo
             frameSize = new Point(20, 35);
             source = new Rectangle(currentFrame.X * 23, currentFrame.Y * 4, frameSize.X, frameSize.Y);
 
+        }
+
+        public void UpDownAnimation(GameTime gt)
+        {
+           // currentFrame.X = 1;
+            currentFrame.Y = 2;            
+            time += (float)gt.ElapsedGameTime.TotalMilliseconds;
+            frameSize = new Point(25, 35);
+            if (time > interval)
+            {
+                //currentFrame.X++;
+                if (currentFrame.X == 1)
+                {
+                    source = new Rectangle(currentFrame.X * 3, currentFrame.Y * 65, frameSize.X, frameSize.Y);
+                    currentFrame.X = 2;
+                }
+                else
+                {
+                    source = new Rectangle(frameSize.X + 3, currentFrame.Y * 65, frameSize.X, frameSize.Y);
+                    currentFrame.X = 1;
+                }
+                
+                time = 0f;
+            }
         }
     }
 }

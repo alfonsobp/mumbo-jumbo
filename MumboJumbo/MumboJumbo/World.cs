@@ -160,7 +160,7 @@ namespace MumboJumbo
                             player.gravity = 0f;
                             player.worldPosition.Y -= 2f;
                             player.cameraPosition.Y -= 2f;
-                            player.state = "stand";
+                            player.state = "upOrDown";
                         }
                         if (elem.Block.Intersects(player.rectangle) && Keyboard.GetState().IsKeyDown(Keys.Down))
                         {
@@ -169,7 +169,7 @@ namespace MumboJumbo
                                 player.gravity = 0f;
                                 player.worldPosition.Y += 2f;
                                 player.cameraPosition.Y += 2f;
-                                player.state = "stand";
+                                player.state = "upOrDown";
                             }
                         }
                     }
