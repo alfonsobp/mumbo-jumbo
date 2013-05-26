@@ -201,6 +201,18 @@ namespace MumboJumbo
             }
            
         }
+
+        public void Update()
+        {
+            position.Y -= 5;
+            this.block = new Rectangle((int)position.X, (int)position.Y, size, size);
+            this.BlocksTop = new Rectangle(this.Block.Left + 2, this.Block.Y, this.Block.Width - 2, 6);
+            this.BlocksBottom = new Rectangle(this.Block.Left + 2, this.Block.Bottom, this.Block.Width - 2, this.Block.Height / 2);
+            this.BlocksLeft = new Rectangle(this.Block.Left, this.Block.Y, this.Block.Width / 2, this.Block.Height);
+            this.BlocksRight = new Rectangle(this.Block.Right, this.Block.Y, 6, this.Block.Height);
+
+        }
+
     }
 
 }

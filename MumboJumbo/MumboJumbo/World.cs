@@ -89,7 +89,7 @@ namespace MumboJumbo
             foreach (WorldElement elem in elements)
                 if (elem.Type == 4)
                     auxActivableElem.Add(elem);
-
+            
             mapSizeX = activableElems.GetLength(1);
             mapSizeY = activableElems.GetLength(0);
             if (auxActivableElem.Count() > 0)
@@ -202,8 +202,7 @@ namespace MumboJumbo
 
                                     foreach (WorldElement obje in elem.activableElemPos)
                                     {
-                                        obje.Scalable = true;
-                                        obje.position.Y -= 5;
+                                        obje.Update();
                                     }
 
                                 }
