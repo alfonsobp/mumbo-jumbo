@@ -18,6 +18,8 @@ namespace MumboJumbo
     {
         public int[,] tilemap;
         public int[,] astralObjects;
+        public int[,] activableElems;
+
         int tilesize;
         int mapSizeX;
         int mapSizeY;
@@ -41,27 +43,33 @@ namespace MumboJumbo
             set { texlis = value; }
         }
 
-        public World(int[,] a, int[,] b, List<Texture2D> texlis)
+        public World(int[,] a, int[,] b,int [,] c, List<Texture2D> texlis)
         {
             tilemap = a;
             astralObjects = b;
+            activableElems = c;
+
             this.texlis = texlis;     
             mapSizeX = tilemap.GetLength(1);
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
             enemies = new List<Enemy>();
+            
 
             tilesize =Game1.graphics.PreferredBackBufferHeight/mapSizeY;
             mapX = 0;
+            int posicionAct = 1;
 
             for (int x = 0; x < mapSizeX; x++)
             {
                 for (int y = 0; y < mapSizeY; y++)
                 {
-                    if (tilemap[y, x] > 0 && tilemap[y, x] < 7)
+                    if (tilemap[y, x] > 0 && tilemap[y, x] < 7 )
                     {
                         elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize),tilesize, tilemap[y, x], false,texlis[tilemap[y,x]]));
                     }
+                    
+                    /*Matriz de configuracion deobjetos astrales*/
                     if (astralObjects[y, x] > 0)
                     {
                         elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize), tilesize, astralObjects[y, x], true, texlis[astralObjects[y, x]]));
@@ -70,8 +78,35 @@ namespace MumboJumbo
                     if (tilemap[y, x] == 7) { 
                     enemies.Add(new Enemy(new Vector2(x * tilesize - mapX, y * tilesize) , texlis[7],tilesize) );
                     }
+
+                    
+
                 }
             }
+
+            List<WorldElement> auxActivableElem = new List<WorldElement>() ;
+
+            foreach (WorldElement elem in elements)
+                if (elem.Type == 4)
+                    auxActivableElem.Add(elem);
+
+            mapSizeX = activableElems.GetLength(1);
+            mapSizeY = activableElems.GetLength(0);
+
+            for (int x = 0; x < mapSizeX; x++)
+                for (int y = 0; y < mapSizeY; y++) {
+                    if (activableElems[y,x]>0) {
+
+                        foreach (WorldElement k in elements)
+                        {
+                            if ((k.position.X == x * tilesize) && (k.position.Y == y * tilesize))
+                            {
+                                auxActivableElem[activableElems[y, x] - 1].activableElemPos.Add(k);
+                            }
+
+                        }
+                    }
+                }
 
         
 
@@ -86,6 +121,8 @@ namespace MumboJumbo
 
             keyPrevious = key;
             key = Keyboard.GetState();
+
+            
 
             if (key.IsKeyDown(Keys.A))
             {
@@ -141,6 +178,7 @@ namespace MumboJumbo
                         if (elem.BlocksBottom.Intersects(player.topBounds))
                         {
 
+
                             if ((player.topBounds.Y >= elem.BlocksBottom.Y))
                             {
                                 player.gravity = 5f;
@@ -153,6 +191,21 @@ namespace MumboJumbo
                         /*Parte de abajo de player con parte de arriba de element*/
                         if (elem.BlocksTop.Intersects(player.footBounds))
                         {
+
+                            if (elem.Activable)
+                            {
+                                if (key.IsKeyDown(Keys.X))
+                                {
+
+                                    foreach (WorldElement obje in elem.activableElemPos)
+                                    {
+                                        obje.Scalable = true;
+                                        obje.position.Y -= 5;
+                                    }
+
+                                }
+
+                            }
 
                             player.gravity = 0f;
                             player.state = "stand";
@@ -203,7 +256,6 @@ namespace MumboJumbo
              
               
         }
-
 
         public void collide(Enemy e, Player player)
         {
