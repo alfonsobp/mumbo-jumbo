@@ -242,12 +242,12 @@ namespace MumboJumbo
                             }
 
                         }
-                        sp.Draw(texture, position + new Vector2(10 - move, 16), source, Color.Red, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+                        sp.Draw(texture, position + new Vector2(10 - move, 16), source, Color.IndianRed, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
 
                     }
                     else
                     {
-                        sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.Red);
+                        sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.IndianRed);
                     }
                     sp.End();
                 }
@@ -301,9 +301,9 @@ namespace MumboJumbo
             if (move)
             {
                 if (type_move == (int)Moves.UP)
-                    position.Y = (position.Y - (2*(nMoves/Math.Abs(nMoves))));               
+                    position.Y = (position.Y - (nMoves/Math.Abs(nMoves)));               
                 else
-                    position.Y = (position.Y + (2*(nMoves/Math.Abs(nMoves))));
+                    position.Y = (position.Y + (nMoves/Math.Abs(nMoves)));
 
                 numMove = numMove + (1 * (nMoves / Math.Abs(nMoves)));
 
