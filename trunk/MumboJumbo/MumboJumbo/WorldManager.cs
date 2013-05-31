@@ -44,20 +44,22 @@ namespace MumboJumbo
 
 
             /*Level  0 */
-            int[,] activableMap = this.LoadMap(0, "Content//activable");
-            int[,] MapWorld = this.LoadMap(0, "Content//map");
-            int[,] astralObjects = this.LoadMap(0, "Content//astral");
+            int[,] activableElemsMoves = this.LoadMap(1, "Content//activableMoves");
+            int[,] activableMap = this.LoadMap(1, "Content//activable");
+            int[,] MapWorld = this.LoadMap(1, "Content//map");
+            int[,] astralObjects = this.LoadMap(1, "Content//astral");
 
-            World map = new World(MapWorld, astralObjects, activableMap, ListaElem);
+            World map = new World(MapWorld, astralObjects, activableMap,activableElemsMoves, ListaElem);
             ListMap[0] = map;
 
             /*Level 1*/
-            int[,] activableMap_1 = this.LoadMap(1, "Content//activable");
-            int[,] MapWorld_1 = this.LoadMap(1, "Content//map");
-            int[,] astralObjects_1 = this.LoadMap(1, "Content//astral");
+            int[,] activableElemsMoves_1 = this.LoadMap(0, "Content//activableMoves");
+            int[,] activableMap_1 = this.LoadMap(0, "Content//activable");
+            int[,] MapWorld_1 = this.LoadMap(0, "Content//map");
+            int[,] astralObjects_1 = this.LoadMap(0, "Content//astral");
 
 
-            World map1 = new World(MapWorld_1, astralObjects_1, activableMap_1, ListaElem);
+            World map1 = new World(MapWorld_1, astralObjects_1, activableMap_1, activableElemsMoves_1, ListaElem);
             ListMap[1] = map1;
         }
 
