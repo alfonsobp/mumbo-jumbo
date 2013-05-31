@@ -216,7 +216,38 @@ namespace MumboJumbo
                 if (astral_mode)
                 {
                     sp.Begin();
-                    sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.Red);
+                    if (activable == true)
+                    {
+                        if (AnimationMove)
+                        {
+                            if (AnimateNum == 10)
+                            {
+                                AnimateNum = 0;
+                                AnimationMove = false;
+                                type_move = (type_move == (int)Moves.UP) ? (int)Moves.DOWN : (int)Moves.UP;
+
+
+                            }
+                            else
+                            {
+                                if (type_move == (int)Moves.UP)
+                                    MoveAnimation(AnimateNum);
+                                else
+                                    MoveAnimation(10 - AnimateNum);
+
+                                AnimateNum++;
+
+                                for (int i = 0; i < 1000; i++) ;
+                            }
+
+                        }
+                        sp.Draw(texture, position + new Vector2(10 - move, 16), source, Color.Red, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+
+                    }
+                    else
+                    {
+                        sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.Red);
+                    }
                     sp.End();
                 }
 
