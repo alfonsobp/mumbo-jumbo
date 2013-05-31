@@ -19,6 +19,7 @@ namespace MumboJumbo
         public int[,] tilemap;
         public int[,] astralObjects;
         public int[,] activableElems;
+        public int[,] activableElemsMoves;
 
         int tilesize;
         int mapSizeX;
@@ -43,11 +44,12 @@ namespace MumboJumbo
             set { texlis = value; }
         }
 
-        public World(int[,] a, int[,] b,int [,] c, List<Texture2D> texlis)
+        public World(int[,] a, int[,] b,int [,] c,int [,] d, List<Texture2D> texlis)
         {
             tilemap = a;
             astralObjects = b;
             activableElems = c;
+            activableElemsMoves = d;
 
             this.texlis = texlis;     
             mapSizeX = tilemap.GetLength(1);
@@ -104,7 +106,8 @@ namespace MumboJumbo
                             {
                                 if ((k.position.X == x * tilesize) && (k.position.Y == y * tilesize))
                                 {
-                                    auxActivableElem[activableElems[y, x] - 1].activableElemPos.Add(k);
+                                    k.nMoves = activableElemsMoves[y, x]*tilesize;
+                                    auxActivableElem[activableElems[y, x] - 1].activableElemList.Add(k);
                                 }
 
                             }
@@ -261,7 +264,7 @@ namespace MumboJumbo
                             {                             
                               
                                 elem.AnimationMove = true;
-                                foreach (WorldElement obje in elem.activableElemPos)
+                                foreach (WorldElement obje in elem.activableElemList)
                                 {
                                     
                                     obje.Move = true;

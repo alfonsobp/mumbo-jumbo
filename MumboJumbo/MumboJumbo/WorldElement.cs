@@ -48,7 +48,7 @@ namespace MumboJumbo
         private Texture2D texture;
         private int size;
 
-        public List<WorldElement> activableElemPos = new List<WorldElement>();
+        public List<WorldElement> activableElemList = new List<WorldElement>();
 
         /*Para el movimiento de los objetos*/
         public float time;
@@ -58,6 +58,7 @@ namespace MumboJumbo
         public static Point currentFrame;
         public Rectangle source;
         public int type_move = (int)Moves.UP;
+        public int nMoves;
         
         
         bool move = false;
@@ -300,13 +301,13 @@ namespace MumboJumbo
             if (move)
             {
                 if (type_move == (int)Moves.UP)
-                    position.Y -= 2;               
+                    position.Y = (position.Y - (2*(nMoves/Math.Abs(nMoves))));               
                 else
-                    position.Y += 2;
+                    position.Y = (position.Y + (2*(nMoves/Math.Abs(nMoves))));
 
-                numMove++;
+                numMove = numMove + (1 * (nMoves / Math.Abs(nMoves)));
 
-                if (numMove == 120)
+                if (numMove == nMoves)
                 {
                     move = false;
                     numMove = 0;
