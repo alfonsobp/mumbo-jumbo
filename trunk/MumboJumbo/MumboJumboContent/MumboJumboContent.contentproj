@@ -276,6 +276,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="palanca_Sheet.png">
+      <Name>palanca_Sheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="activable1.txt">
       <Name>activable1</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -300,11 +307,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="palanca_Sheet.png">
-      <Name>palanca_Sheet</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
+    <None Include="activableMoves0.txt">
+      <Name>activableMoves0</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="activableMoves1.txt">
+      <Name>activableMoves1</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
