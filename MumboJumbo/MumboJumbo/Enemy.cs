@@ -50,7 +50,7 @@ namespace MumboJumbo
 
      
         public int current_num_move = 0;
-        public int NumberMoves = 50;
+        public int NumberMoves = 100;
         public int move_face;
         public bool isAlive = true;
         public int size;
@@ -108,23 +108,23 @@ namespace MumboJumbo
             if (move_face == (int)moving.LEFT)
             {
 
-                worldPosition -= new Vector2(5f, 0);
+                worldPosition -= new Vector2(2f, 0);
             }
 
             if (move_face == (int)moving.RIGHT)
             {
-                worldPosition += new Vector2(5f, 0);
+                worldPosition += new Vector2(2f, 0);
 
             }
             if (move_face == (int)moving.JUMP)
             {
 
-                worldPosition -= new Vector2(0, 5f);
+                worldPosition -= new Vector2(0, 2f);
             }
 
             if (move_face == (int)moving.JUMP_DOWN)
             {
-                worldPosition += new Vector2(0, 5f);
+                worldPosition += new Vector2(0, 2f);
 
             }
 

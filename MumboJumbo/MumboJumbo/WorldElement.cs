@@ -15,6 +15,8 @@ using Microsoft.Xna.Framework.Storage;
 
 
 enum property {SCALABLE =2,MOVIBLE=3,ACTIVABLE=4 , DESTRUIBLE=5 , HURTS=6 }
+enum Moves{UP,DOWN}
+
 
 namespace MumboJumbo
 {
@@ -48,8 +50,26 @@ namespace MumboJumbo
 
         public List<WorldElement> activableElemPos = new List<WorldElement>();
 
+        /*Para el movimiento de los objetos*/
+        public float time;
+        public string StateSheet = "Stand";
+        public Point frameSize;
+        public Point sheetSize;
+        public static Point currentFrame;
+        public Rectangle source;
+        public int type_move = (int)Moves.UP;
+        
+        
+        bool move = false;
 
-      
+        public bool Move
+        {
+            get { return move; }
+            set { move = value; }
+        }
+        int numMove = 0;
+
+        public bool AnimationMove = false;
 
         public WorldElement()
         {
@@ -75,6 +95,13 @@ namespace MumboJumbo
            
             this.astralObject = astralObject;
             if (astralObject) this.state = false;
+
+            frameSize = new Point(30, 40);
+            sheetSize = new Point(6, 7);
+            currentFrame = new Point(0, 0);
+            time = 0f;
+         
+            StandAnimation();
 
         }
 
@@ -180,6 +207,8 @@ namespace MumboJumbo
             set { blocksBottom = value; }
         }
 
+        public int AnimateNum = 0;
+
         public void Draw(SpriteBatch sp, int move,bool astral_mode) {
 
             if (astralObject)
@@ -195,24 +224,95 @@ namespace MumboJumbo
             else
             {
                 sp.Begin();
-                sp.Draw(texture,new Rectangle((int)position.X-move,(int)position.Y,size,size),Color.White);
+
+                if (activable == true)
+                {
+                    if (AnimationMove)
+                    {
+                        if (AnimateNum == 10)
+                        {
+                            AnimateNum = 0;
+                            AnimationMove = false;
+                            type_move = (type_move == (int)Moves.UP) ? (int)Moves.DOWN : (int)Moves.UP;
+                               
+
+                        }
+                        else
+                        {
+                            if (type_move == (int)Moves.UP)
+                                MoveAnimation(AnimateNum);                          
+                            else
+                                MoveAnimation(10 - AnimateNum);
+
+                            AnimateNum++;
+   
+                            for (int i = 0; i < 1000; i++) ;
+                        }
+                     
+                    }
+                    sp.Draw(texture, position + new Vector2(10 - move, 16), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+
+                }
+                else
+                {
+                    sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.White);
+                }
                 sp.End();
             
             }
            
         }
 
-        public void Update()
+        public void Update(GameTime gt)
         {
-            position.Y -= 5;
+
+            if (move)
+            {
+                if (type_move == (int)Moves.UP)
+                    position.Y -= 2;               
+                else
+                    position.Y += 2;
+
+                numMove++;
+
+                if (numMove == 120)
+                {
+                    move = false;
+                    numMove = 0;
+                    type_move = (type_move==((int)Moves.UP))?(int)Moves.DOWN:(int)Moves.UP;
+                }
+
+            }
+
+            
             this.block = new Rectangle((int)position.X, (int)position.Y, size, size);
             this.BlocksTop = new Rectangle(this.Block.Left + 2, this.Block.Y, this.Block.Width - 2, 6);
             this.BlocksBottom = new Rectangle(this.Block.Left + 2, this.Block.Bottom, this.Block.Width - 2, this.Block.Height / 2);
             this.BlocksLeft = new Rectangle(this.Block.Left, this.Block.Y, this.Block.Width / 2, this.Block.Height);
             this.BlocksRight = new Rectangle(this.Block.Right, this.Block.Y, 6, this.Block.Height);
 
+         
+
         }
 
+        public void MoveAnimation(int i)
+        {
+
+            frameSize = new Point(57, 46);
+            source = new Rectangle(i * frameSize.X, currentFrame.Y, frameSize.X, frameSize.Y);
+        }
+
+        public void StandAnimation()
+        {
+            currentFrame.X = 0;
+            currentFrame.Y = 0;
+            frameSize = new Point(57, 46);
+            source = new Rectangle(currentFrame.X, currentFrame.Y, frameSize.X, frameSize.Y);
+
+        }
+
+
+       
     }
 
 }

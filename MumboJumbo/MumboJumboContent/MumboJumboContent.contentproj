@@ -257,13 +257,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="palanca.jpg">
-      <Name>palanca</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="map0.txt">
       <Name>map0</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -272,6 +265,44 @@
   <ItemGroup>
     <None Include="astral0.txt">
       <Name>astral0</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="palanca.tga">
+      <Name>palanca</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="palanca_Sheet.png">
+      <Name>palanca_Sheet</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="activable1.txt">
+      <Name>activable1</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="map1.txt">
+      <Name>map1</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="astral1.txt">
+      <Name>astral1</Name>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="activable0.txt">
+      <Name>activable0</Name>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

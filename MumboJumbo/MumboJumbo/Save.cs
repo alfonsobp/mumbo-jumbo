@@ -38,5 +38,11 @@ namespace MumboJumbo
 
         public bool[] lstate;
 
+        public Vector2[] Enemies;
+        public Vector2[] Elements;
+
+        public bool[] ene_state;
+        public bool[] ele_state;
+
     }
 }
