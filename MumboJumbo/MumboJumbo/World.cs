@@ -177,9 +177,7 @@ namespace MumboJumbo
                                 player.cameraPosition.Y += 2f;
                                 player.state = "upOrDown";
                             }
-                        }
-
-                        
+                        }                        
                     }
 
                     /*Interseccion de la parte de arriba del player parte de abajo de un elemento*/
@@ -260,9 +258,7 @@ namespace MumboJumbo
                         if (elem.Activable)
                         {
                             if (key.IsKeyDown(Keys.X)&&!keyPrevious.IsKeyDown(Keys.X) )
-                            {
-
-                              //  elem.MoveAnimation(gameTime);
+                            {                             
                               
                                 elem.AnimationMove = true;
                                 foreach (WorldElement obje in elem.activableElemPos)
