@@ -173,6 +173,7 @@ namespace MumboJumbo
             if (state == "stand" || state == "upOrDown")
             {
 
+
                 if (keystate.IsKeyDown(Keys.Left))
                 {
                     state = "walk";
