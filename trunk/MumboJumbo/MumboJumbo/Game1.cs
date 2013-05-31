@@ -21,15 +21,13 @@ namespace MumboJumbo
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
-        bool AstralMode = false;
+        
 
         Song music;
         bool started;
 
-        MultiBackground spaceBackground;
-        double timeElap;
-        Astral current;
-        Astral playerIni;
+        MultiBackground spaceBackground;        
+        
         WorldManager WorldManager1 = new WorldManager();
         ScreenManager ScreenManager1 = new ScreenManager();
         StorageDevice device;
@@ -45,10 +43,7 @@ namespace MumboJumbo
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             started = false;
-            this.IsMouseVisible = true;
-            current = new Astral();
-            playerIni = new Astral();
-
+            this.IsMouseVisible = true;          
 
         }
 
@@ -85,7 +80,7 @@ namespace MumboJumbo
            
 
             WorldManager1.Start(Content);
-            playerIni.save(player, WorldManager1.getCurrentWorld());
+            player.PlayerIni.save(player, WorldManager1.getCurrentWorld());
 
 
         }
@@ -100,6 +95,7 @@ namespace MumboJumbo
         public KeyboardState key;
 
         protected override void Update(GameTime gameTime)
+        
         {
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -152,7 +148,10 @@ namespace MumboJumbo
 
             }
 
+         
             WorldManager1.getCurrentWorld().Update(gameTime, player);
+
+          
             ScreenManager1.update(gameTime);
 
             int lvlAnt = WorldManager1.level;
@@ -160,7 +159,7 @@ namespace MumboJumbo
 
             if (WorldManager1.level > lvlAnt)
             {
-                playerIni.load(player, WorldManager1.getCurrentWorld());
+                player.PlayerIni.load(player, WorldManager1.getCurrentWorld());
             }
 
             if (!ScreenManager1.getStartScreen().Enable && !ScreenManager1.getIntermediateScreen().Enable)
@@ -175,6 +174,7 @@ namespace MumboJumbo
 
                 spaceBackground.Update(gameTime);
                 player.Update(gameTime);
+  
                 Camera();
             }
 
@@ -197,7 +197,7 @@ namespace MumboJumbo
 
             if (!player.Life)
             {
-                playerIni.load(player, WorldManager1.getCurrentWorld());
+                player.PlayerIni.load(player, WorldManager1.getCurrentWorld());
             }
 
             if (ScreenManager1.getStartScreen().Exit.clicked || ScreenManager1.getIntermediateScreen().Exit.clicked)
@@ -219,6 +219,11 @@ namespace MumboJumbo
                 spaceBackground.Draw();
                 WorldManager1.getCurrentWorld().Draw(spriteBatch);
                 player.Draw(spriteBatch);
+
+                if (player.astralMode) {
+                    player.astralCorp.draw(spriteBatch,WorldManager1.getCurrentWorld().mapX);
+                }
+                
                 
             }
 
@@ -306,28 +311,30 @@ namespace MumboJumbo
             {
 
 
-                int[] convertion = new int[WorldManager1.getCurrentWorld().tilemap.GetLength(1) * WorldManager1.getCurrentWorld().tilemap.GetLength(0)];
-
-                for (int i = 0; i < WorldManager1.getCurrentWorld().tilemap.GetLength(1); i++)
-                {
-                    for (int j = 0; j < WorldManager1.getCurrentWorld().tilemap.GetLength(0); j++)
-                    {
-
-                        convertion[i * WorldManager1.getCurrentWorld().tilemap.GetLength(0) + j] = WorldManager1.getCurrentWorld().tilemap[j, i];
-                    }
-
-
-
+                Vector2[] Elements0 = new Vector2[WorldManager1.getCurrentWorld().elements.Count];
+                bool[] elembool = new bool[WorldManager1.getCurrentWorld().elements.Count];
+            
+                int i = 0;
+                foreach (WorldElement e in WorldManager1.getCurrentWorld().elements) {
+                    Elements0[i] = e.position;
+                    elembool[i] = e.State;
+                    i++;
+                
                 }
 
 
-                bool[] lbool = new bool[WorldManager1.getCurrentWorld().elements.Count];
+                
 
-                for (int i = 0; i < lbool.GetLength(0); i++)
-                {
-
-                    lbool[i] = WorldManager1.getCurrentWorld().elements[i].State;
+                Vector2[] Enemies0 = new Vector2[WorldManager1.getCurrentWorld().enemies.Count];
+                bool[] enebool = new bool[WorldManager1.getCurrentWorld().enemies.Count];
+                i = 0;
+                foreach (Enemy e in WorldManager1.getCurrentWorld().enemies) {
+                    Enemies0[i] = e.worldPosition;
+                    enebool[i] = e.IsAlive;
+                    i++;
+                
                 }
+
 
                 Save SaveData = new Save()
                 {
@@ -342,18 +349,17 @@ namespace MumboJumbo
                     speed = player.speed,
                     prevstate = player.prevstate,
                     frameSize = player.frameSize,
-                    currentFrame = player.currentFrame,
-                  
-                    level = WorldManager1.level,
-                    tilemap = convertion,
+                    currentFrame = player.currentFrame,                  
+                    level = WorldManager1.level,                
                     mapX = WorldManager1.getCurrentWorld().mapX,
                     mapW = WorldManager1.getCurrentWorld().MapW,
                     source = player.source,
                     rectangle = player.rectangle,
                     astral = player.astralMode,
-                    lstate = lbool
-
-
+                    ene_state = enebool,
+                    ele_state=elembool,
+                    Enemies=Enemies0,
+                    Elements=Elements0          
 
                 };
                 IAsyncResult r = device.BeginOpenContainer(containerName, null, null);
@@ -413,25 +419,24 @@ namespace MumboJumbo
                 player.rectangle = save.rectangle;
 
                 player.astralMode = save.astral;
+                int i = 0 ;
+                foreach (WorldElement e in WorldManager1.getCurrentWorld().elements) {
 
-
-
-                for (int i = 0; i < WorldManager1.getCurrentWorld().tilemap.GetLength(1); i++)
-                {
-                    for (int j = 0; j < WorldManager1.getCurrentWorld().tilemap.GetLength(0); j++)
-                    {
-
-                        WorldManager1.getCurrentWorld().tilemap[j, i] = save.tilemap[i * WorldManager1.getCurrentWorld().tilemap.GetLength(0) + j];
-
-                    }
-
+                    e.position = save.Elements[i];
+                    e.State = save.ele_state[i];
+                    i++;
+                
                 }
 
-                for (int i = 0; i < save.lstate.GetLength(0); i++)
-                {
-
-                    WorldManager1.getCurrentWorld().elements[i].State = save.lstate[i];
+                i = 0;
+                foreach (Enemy en in WorldManager1.getCurrentWorld().enemies) {
+                    en.worldPosition = save.Enemies[i];
+                    en.isAlive = save.ene_state[i];
+                    i++;
+                
+                
                 }
+
 
 
 

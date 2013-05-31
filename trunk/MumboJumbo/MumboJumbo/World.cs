@@ -23,7 +23,7 @@ namespace MumboJumbo
         int tilesize;
         int mapSizeX;
         int mapSizeY;
-        Astral current = new Astral();
+
         
         List<Texture2D> texlis;
         public List<WorldElement> elements;
@@ -58,7 +58,7 @@ namespace MumboJumbo
 
             tilesize =Game1.graphics.PreferredBackBufferHeight/mapSizeY;
             mapX = 0;
-            int posicionAct = 1;
+         
 
             for (int x = 0; x < mapSizeX; x++)
             {
@@ -126,10 +126,10 @@ namespace MumboJumbo
             key = Keyboard.GetState();
 
             
-
+            
             if (key.IsKeyDown(Keys.A))
             {
-                if (!astralMode)
+                if (!player.astralMode&&(player.state== "walk"||player.state =="stand")&&!player.jump)
                 {
                     OnAstralMode(player);
                     timeElap = gameTime.TotalGameTime.TotalSeconds;
@@ -143,9 +143,15 @@ namespace MumboJumbo
             }
 
             /*colision de los elementos*/
-            foreach (WorldElement elem in elements)
+            foreach (WorldElement elem in elements)               
                 if (elem.State)
                 {
+                    if (player.astralMode) {
+                        player.astralCorp.collision(elem);
+                        player.astralCorp.Update();
+                    
+                    }
+                    
                     if (elem.Scalable)
                     {
 
@@ -172,11 +178,13 @@ namespace MumboJumbo
                                 player.state = "upOrDown";
                             }
                         }
+
+                        
                     }
 
                     /*Interseccion de la parte de arriba del player parte de abajo de un elemento*/
 
-                    if (!elem.Scalable)
+                    if (!elem.Scalable && !elem.Activable)
                     {
                         if (elem.BlocksBottom.Intersects(player.topBounds))
                         {
@@ -188,31 +196,30 @@ namespace MumboJumbo
                                 player.jump = false;
                                 player.JumpSpeed = 0f;
                                 //player.startY=;
+                              
                             }
+                        }
+                        //
+                        if (elem.Move && elem.Block.Intersects(player.rectangle))
+                        {
+                            //elem.Move = false;
+                            player.gravity = 0f;
+                            player.startY = player.worldPosition.Y;
+                            player.cameraPosition.Y = elem.BlocksTop.Y - player.rectangle.Height+2;
+                            player.worldPosition.Y = elem.BlocksTop.Y - player.rectangle.Height+2;
+                            player.state = "stand";
+
+                                                  
                         }
 
                         /*Parte de abajo de player con parte de arriba de element*/
                         if (elem.BlocksTop.Intersects(player.footBounds))
                         {
-
-                            if (elem.Activable)
-                            {
-                                if (key.IsKeyDown(Keys.X))
-                                {
-
-                                    foreach (WorldElement obje in elem.activableElemPos)
-                                    {
-                                        obje.Update();
-                                    }
-
-                                }
-
-                            }
-
+                            
                             player.gravity = 0f;
                             player.state = "stand";
                             player.startY = player.worldPosition.Y;
-
+                       
                             if (elem.Hurts)
                             {
                                 if (!player.astralMode)
@@ -223,6 +230,8 @@ namespace MumboJumbo
                                 else
                                     OffAstralMode(player);
                             }
+
+                            
                         }
 
                         if (elem.BlocksLeft.Intersects(player.rightRec))
@@ -232,6 +241,7 @@ namespace MumboJumbo
                                 player.worldPosition.X -= 5f;
                                 player.cameraPosition.X -= 5f;
                             }
+                           
                         }
 
                         if (elem.BlocksRight.Intersects(player.leftRec))
@@ -241,8 +251,32 @@ namespace MumboJumbo
                                 player.worldPosition.X += 5f;
                                 player.cameraPosition.X += 5f;
                             }
+                          
                         }
                     }
+
+                    if (elem.Block.Intersects(player.rectangle))
+                    {
+                        if (elem.Activable)
+                        {
+                            if (key.IsKeyDown(Keys.X)&&!keyPrevious.IsKeyDown(Keys.X) )
+                            {
+
+                              //  elem.MoveAnimation(gameTime);
+                              
+                                elem.AnimationMove = true;
+                                foreach (WorldElement obje in elem.activableElemPos)
+                                {
+                                    
+                                    obje.Move = true;
+                                }
+
+                            }
+
+                        }
+                    }
+
+                    elem.Update(gameTime);
 
                 }
             /*colision de los enemigos*/
@@ -250,7 +284,7 @@ namespace MumboJumbo
             {
                 if (e.IsAlive)
                 {
-                    collide(e, player);
+                    collide(e, player);           
                     Collide(e, elements);
                     e.Update();
                 }
@@ -361,7 +395,7 @@ namespace MumboJumbo
 
             /*Devolver los valores que cambiaste en astralMode*/
 
-            current.load(player, this);
+            player.astralCorp.load(player, this);
 
             /*Cambiar de estado a todos los elementos*/
             foreach (WorldElement e in elements)
@@ -382,7 +416,7 @@ namespace MumboJumbo
 
             /*Guardar en Current las posiciones en el momento de hacer astralMode*/
 
-            current.save(player, this);
+           player.astralCorp.save(player, this);
 
             /*Cambiar el estado a todos los elementos */
             foreach (WorldElement e in elements)
@@ -415,7 +449,8 @@ namespace MumboJumbo
         public void Draw(SpriteBatch sp)
         {
 
-            if (astralMode) current.draw(sp, mapX);
+            
+
             foreach (WorldElement we in elements) 
             {
                 if (we.State)

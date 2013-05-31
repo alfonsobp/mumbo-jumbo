@@ -70,10 +70,11 @@ namespace MumboJumbo
         public Rectangle source;
         float interval;
         public Vector2 prevPosition;
-       
+        public Astral astralCorp;
+        public Astral PlayerIni;
         public bool astralMode = false;
 
-
+        public Player(){}
 
         public Player(ContentManager ct)
         {
@@ -95,8 +96,8 @@ namespace MumboJumbo
             Texture = ct.Load<Texture2D>("Mumbo_SpSheets");
             barAstral = ct.Load<Texture2D>("AstralBar");
             barLife = ct.Load<Texture2D>("LifeBar");
-
-
+            PlayerIni = new Astral();
+            astralCorp = new Astral();
         }
 
        
