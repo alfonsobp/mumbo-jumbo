@@ -22,9 +22,9 @@ namespace MumboJumbo
             ListMap = new World[2];
 
             Texture2D tex0 = ct.Load<Texture2D>("in");
-            Texture2D tex1 = ct.Load<Texture2D>("marioblock[1]");
+            Texture2D tex1 = ct.Load<Texture2D>("Loco_Ground");
             Texture2D tex2 = ct.Load<Texture2D>("ladder2");
-            Texture2D tex3 = ct.Load<Texture2D>("Ice_Block");
+            Texture2D tex3 = ct.Load<Texture2D>("ground1");
             Texture2D tex4 = ct.Load<Texture2D>("palanca_Sheet");
             Texture2D tex5 = ct.Load<Texture2D>("Ice_Block");
             Texture2D tex6 = ct.Load<Texture2D>("pua");

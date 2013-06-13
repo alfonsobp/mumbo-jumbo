@@ -306,6 +306,7 @@ namespace MumboJumbo
 
                 if (e.BlocksRight.Intersects(player.leftRec))
                 {
+                    player.state = "dead";
                     if (player.footBounds.Y >= e.BlocksRight.Y)
                     {
 
@@ -329,6 +330,7 @@ namespace MumboJumbo
 
                 if (e.BlocksLeft.Intersects(player.rightRec))
                 {
+                    player.state = "dead";
                     if (player.footBounds.Y >= e.BlocksLeft.Y)
                     {
 

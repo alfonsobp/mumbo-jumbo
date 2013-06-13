@@ -40,6 +40,7 @@ namespace MumboJumbo
         public float jumpSpeed;
         Boolean life = true;
         int lives = 5;
+        public int AnimateNum = 0;
 
         public int Lives
         {
@@ -59,6 +60,8 @@ namespace MumboJumbo
             get { return jumpSpeed; }
             set { jumpSpeed = value; }
         }
+
+
         public float gravity;
         public float startY;
         public float speed;
@@ -200,6 +203,21 @@ namespace MumboJumbo
             if (state == "upOrDown")
             {
                 UpDownAnimation(gt);
+            }
+
+            if (state == "Dead")
+            {
+                DeadAnimation(AnimateNum);
+                if (AnimateNum == 3)
+                {
+                    AnimateNum = 0;
+                    state = "satnd";                                
+                }
+                else
+                {
+                    AnimateNum++;
+                    for (int i = 0; i < 1000; i++) ;
+                }
             }
 
             if (jump)
@@ -376,5 +394,11 @@ namespace MumboJumbo
                 time = 0f;
             }
         }
-    }
+
+        public void DeadAnimation(int i)
+        {
+            frameSize = new Point(25, 35);
+            source = new Rectangle(i * (frameSize.X + 3), currentFrame.Y * 65, frameSize.X, frameSize.Y);
+            }
+        }
 }
