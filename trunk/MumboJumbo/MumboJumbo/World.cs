@@ -72,14 +72,17 @@ namespace MumboJumbo
                     }
                     
                     /*Matriz de configuracion deobjetos astrales*/
-                    if (astralObjects[y, x] > 0)
+                    if (astralObjects[y, x] > 0 && astralObjects[y,x]<7)
                     {
                         elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize), tilesize, astralObjects[y, x], true, texlis[astralObjects[y, x]]));
                     }
 
                     if (tilemap[y, x] == 7) { 
-                    enemies.Add(new Enemy(new Vector2(x * tilesize - mapX, y * tilesize) , texlis[7],tilesize) );
+                    enemies.Add(new Enemy(new Vector2(x * tilesize - mapX, y * tilesize) , texlis[7],tilesize,false) );
                     }
+
+                    if(astralObjects[y,x]==7)
+                        enemies.Add(new Enemy(new Vector2(x * tilesize - mapX, y * tilesize), texlis[7], tilesize,true));
 
                     
 
@@ -281,7 +284,7 @@ namespace MumboJumbo
             /*colision de los enemigos*/
             foreach (Enemy e in enemies)
             {
-                if (e.IsAlive)
+                if (e.IsAlive&&e.state)
                 {
                     collide(e, player);           
                     Collide(e, elements);
@@ -405,6 +408,14 @@ namespace MumboJumbo
                 }
 
             }
+
+            foreach (Enemy en in enemies)
+            {
+
+                en.state = !en.state;
+
+            }
+
         }
 
         public void OnAstralMode(Player player)
@@ -426,6 +437,12 @@ namespace MumboJumbo
 
                 }
 
+            }
+
+            foreach (Enemy en in enemies) {
+
+                en.state = !en.state;
+            
             }
 
 
@@ -459,7 +476,7 @@ namespace MumboJumbo
             }
 
             foreach (Enemy e in enemies)
-                if (e.IsAlive)
+                if (e.IsAlive&&e.state)
                 {
                     e.Draw(sp, mapX);
                 }
