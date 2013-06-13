@@ -251,7 +251,7 @@ namespace MumboJumbo
             if (state == "fall")
             {
                 gravity = 5f;
-                JumpAnimation();
+                FallAnimation();                    
             }
             if (state == "jump")
             {
@@ -357,10 +357,10 @@ namespace MumboJumbo
 
         public void FallAnimation()
         {
-            currentFrame.X = 5;
-            currentFrame.X = 2;
+            currentFrame.X = 1;
+            currentFrame.X = 1;
             frameSize = new Point(40, 50);
-            source = new Rectangle(currentFrame.X * 80, currentFrame.Y * 18, frameSize.X, frameSize.Y);
+            source = new Rectangle(currentFrame.X * 126, currentFrame.Y * 121, frameSize.X, frameSize.Y);
         }
         public void StandAnimation()
         {
