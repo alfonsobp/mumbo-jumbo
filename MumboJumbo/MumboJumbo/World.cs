@@ -66,13 +66,13 @@ namespace MumboJumbo
             {
                 for (int y = 0; y < mapSizeY; y++)
                 {
-                    if (tilemap[y, x] > 0 && tilemap[y, x] < 7 )
+                    if (tilemap[y, x] > 0 && tilemap[y, x] != 7 )
                     {
                         elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize),tilesize, tilemap[y, x], false,texlis[tilemap[y,x]]));
                     }
                     
                     /*Matriz de configuracion deobjetos astrales*/
-                    if (astralObjects[y, x] > 0 && astralObjects[y,x]<7)
+                    if (astralObjects[y, x] > 0 && astralObjects[y,x]!=7)
                     {
                         elements.Add(new WorldElement(new Vector2(x * tilesize, y * tilesize), tilesize, astralObjects[y, x], true, texlis[astralObjects[y, x]]));
                     }
@@ -224,7 +224,7 @@ namespace MumboJumbo
                             player.state = "stand";
                             player.startY = player.worldPosition.Y;
                        
-                            if (elem.Hurts)
+                            if (elem.Hurts || elem.Flamabable)
                             {
                                 if (!player.astralMode)
                                 {

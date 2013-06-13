@@ -27,8 +27,9 @@ namespace MumboJumbo
             Texture2D tex3 = ct.Load<Texture2D>("ground1");
             Texture2D tex4 = ct.Load<Texture2D>("palanca_Sheet");
             Texture2D tex5 = ct.Load<Texture2D>("Ice_Block");
-            Texture2D tex6 = ct.Load<Texture2D>("pua");
+            Texture2D tex6 = ct.Load<Texture2D>("Pua");
             Texture2D tex7 = ct.Load<Texture2D>("Ardilla");
+            Texture2D tex8 = ct.Load<Texture2D>("Flame");
 
 
             List<Texture2D> ListaElem = new List<Texture2D>();
@@ -41,7 +42,7 @@ namespace MumboJumbo
             ListaElem.Add(tex5);
             ListaElem.Add(tex6);
             ListaElem.Add(tex7);
-
+            ListaElem.Add(tex8);
 
             /*Level  0 */
             int[,] activableElemsMoves = this.LoadMap(0, "Content//activableMoves");
