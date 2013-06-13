@@ -75,7 +75,7 @@ namespace MumboJumbo
 
 
             music = Content.Load<Song>("Mumbo_Jumbo");
-            MediaPlayer.IsRepeating = true;
+            MediaPlayer.IsRepeating = false;
 
            
 

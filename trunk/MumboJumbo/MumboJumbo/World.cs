@@ -56,9 +56,9 @@ namespace MumboJumbo
             mapSizeY = tilemap.GetLength(0);
             elements = new List<WorldElement>();
             enemies = new List<Enemy>();
-            
 
-            tilesize =Game1.graphics.PreferredBackBufferHeight/mapSizeY;
+
+            tilesize = Game1.graphics.PreferredBackBufferHeight / mapSizeY;
             mapX = 0;
          
 
@@ -306,7 +306,7 @@ namespace MumboJumbo
 
                 if (e.BlocksRight.Intersects(player.leftRec))
                 {
-                    player.state = "dead";
+                    
                     if (player.footBounds.Y >= e.BlocksRight.Y)
                     {
 
@@ -330,7 +330,7 @@ namespace MumboJumbo
 
                 if (e.BlocksLeft.Intersects(player.rightRec))
                 {
-                    player.state = "dead";
+                    
                     if (player.footBounds.Y >= e.BlocksLeft.Y)
                     {
 
@@ -478,7 +478,7 @@ namespace MumboJumbo
             }
 
             foreach (Enemy e in enemies)
-                if (e.IsAlive&&e.state)
+                if (e.IsAlive && e.state)
                 {
                     e.Draw(sp, mapX);
                 }

@@ -90,7 +90,7 @@ namespace MumboJumbo
             jump = false;
             gravity = 0f;
             speed = 5f;
-            frameSize = new Point(30, 30);
+            frameSize = new Point(50, 50);
             sheetSize = new Point(6, 7);
             currentFrame = new Point(0, 0);
             time = 0f;
@@ -117,12 +117,12 @@ namespace MumboJumbo
             this.jump = false;
             this.gravity = 0f;
             this.speed = 5f;
-            this.frameSize = new Point(30, 30);
+            this.frameSize = new Point(50, 50);
             this.sheetSize = new Point(6, 7);
             this.currentFrame = new Point(0, 0);
             this.time = 0f;
 
-            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 20, 25);
+            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 40, 45);
             footBounds = new Rectangle(rectangle.X, rectangle.Center.Y, rectangle.Width - 3, rectangle.Height / 2);
             rightRec = new Rectangle(rectangle.Right - 3, rectangle.Y, 3, rectangle.Height);
             leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
@@ -262,7 +262,7 @@ namespace MumboJumbo
                 state = "walk";
             }
 
-            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 20, 25);
+            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 40, 45);
             footBounds = new Rectangle(rectangle.X, rectangle.Center.Y, rectangle.Width - 3, rectangle.Height / 2);
             rightRec = new Rectangle(rectangle.Right - 3, rectangle.Y, 3, rectangle.Height);
             leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
