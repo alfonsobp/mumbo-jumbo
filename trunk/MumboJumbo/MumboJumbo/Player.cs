@@ -90,13 +90,13 @@ namespace MumboJumbo
             jump = false;
             gravity = 0f;
             speed = 5f;
-            frameSize = new Point(50, 50);
+            frameSize = new Point(40, 40);
             sheetSize = new Point(6, 7);
             currentFrame = new Point(0, 0);
             time = 0f;
             interval = 100f;
 
-            Texture = ct.Load<Texture2D>("Mumbo_SpSheets");
+            Texture = ct.Load<Texture2D>("AJ-SpriteSheet");
             barAstral = ct.Load<Texture2D>("AstralBar");
             barLife = ct.Load<Texture2D>("LifeBar");
             PlayerIni = new Astral();
@@ -117,12 +117,12 @@ namespace MumboJumbo
             this.jump = false;
             this.gravity = 0f;
             this.speed = 5f;
-            this.frameSize = new Point(50, 50);
+            this.frameSize = new Point(20, 25);
             this.sheetSize = new Point(6, 7);
             this.currentFrame = new Point(0, 0);
             this.time = 0f;
 
-            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 40, 45);
+            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 20, 35);
             footBounds = new Rectangle(rectangle.X, rectangle.Center.Y, rectangle.Width - 3, rectangle.Height / 2);
             rightRec = new Rectangle(rectangle.Right - 3, rectangle.Y, 3, rectangle.Height);
             leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
@@ -262,9 +262,9 @@ namespace MumboJumbo
                 state = "walk";
             }
 
-            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 40, 45);
+            rectangle = new Rectangle((int)worldPosition.X, (int)worldPosition.Y, 20, 35);
             footBounds = new Rectangle(rectangle.X, rectangle.Center.Y, rectangle.Width - 3, rectangle.Height / 2);
-            rightRec = new Rectangle(rectangle.Right - 3, rectangle.Y, 3, rectangle.Height);
+            rightRec = new Rectangle(rectangle.Right + 3, rectangle.Y, 3, rectangle.Height);
             leftRec = new Rectangle(rectangle.Left, rectangle.Y, 3, rectangle.Height);
             topBounds = new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 3, 3);
 
@@ -330,9 +330,9 @@ namespace MumboJumbo
         {
 
             time += (float)gt.ElapsedGameTime.TotalMilliseconds;
-            currentFrame.Y = 3;
+            currentFrame.Y = 1;
 
-            frameSize = new Point(30, 33);
+            frameSize = new Point(41, 50);
             if (time > interval)
             {
                 currentFrame.X++;
@@ -340,7 +340,7 @@ namespace MumboJumbo
                 {
                     currentFrame.X = 1;
                 }
-                source = new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * 17, frameSize.X, frameSize.Y);
+                source = new Rectangle(currentFrame.X * frameSize.X, currentFrame.Y * 65, frameSize.X, frameSize.Y);
                 time = 0f;
             }
         }
@@ -348,10 +348,10 @@ namespace MumboJumbo
         public void JumpAnimation()
         {
 
-            currentFrame.Y = 5;
+            currentFrame.Y = 1;
             currentFrame.X = 1;
-            frameSize = new Point(26, 33);
-            source = new Rectangle(currentFrame.X * 56, currentFrame.Y * 18, frameSize.X, frameSize.Y);
+            frameSize = new Point(40, 50);
+            source = new Rectangle(currentFrame.X * 88, currentFrame.Y * 122, frameSize.X, frameSize.Y);
 
         }
 
@@ -359,35 +359,34 @@ namespace MumboJumbo
         {
             currentFrame.X = 5;
             currentFrame.X = 2;
-            frameSize = new Point(33, 33);
+            frameSize = new Point(40, 50);
             source = new Rectangle(currentFrame.X * 80, currentFrame.Y * 18, frameSize.X, frameSize.Y);
         }
         public void StandAnimation()
         {
             currentFrame.X = 1;
-            currentFrame.Y = 2;
-            frameSize = new Point(20, 35);
-            source = new Rectangle(currentFrame.X * 23, currentFrame.Y * 4, frameSize.X, frameSize.Y);
+            currentFrame.Y = 1;
+            frameSize = new Point(40, 50);
+            source = new Rectangle(currentFrame.X * 10, currentFrame.Y*8, frameSize.X, frameSize.Y);
 
         }
 
         public void UpDownAnimation(GameTime gt)
-        {
-           // currentFrame.X = 1;
-            currentFrame.Y = 2;            
+        {           
+            currentFrame.Y = 1;            
             time += (float)gt.ElapsedGameTime.TotalMilliseconds;
-            frameSize = new Point(25, 35);
+            frameSize = new Point(40, 50);
+            
             if (time > interval)
-            {
-                //currentFrame.X++;
+            {         
                 if (currentFrame.X == 1)
                 {
-                    source = new Rectangle(currentFrame.X * 3, currentFrame.Y * 65, frameSize.X, frameSize.Y);
+                    source = new Rectangle(currentFrame.X * 3, currentFrame.Y * 183, frameSize.X, frameSize.Y);
                     currentFrame.X = 2;
                 }
                 else
                 {
-                    source = new Rectangle(frameSize.X + 3, currentFrame.Y * 65, frameSize.X, frameSize.Y);
+                    source = new Rectangle(frameSize.X + 3, currentFrame.Y * 183, frameSize.X, frameSize.Y);
                     currentFrame.X = 1;
                 }
                 

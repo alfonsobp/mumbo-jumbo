@@ -242,7 +242,7 @@ namespace MumboJumbo
                                 if (type_move == (int)Moves.UP)
                                     MoveAnimation(AnimateNum);
                                 else
-                                    MoveAnimation(10 - AnimateNum);
+                                    MoveAnimation(9 - AnimateNum);
 
                                 AnimateNum++;
 
@@ -250,7 +250,7 @@ namespace MumboJumbo
                             }
 
                         }
-                        sp.Draw(texture, position + new Vector2(10 - move, 16), source, Color.IndianRed, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+                        sp.Draw(texture, position + new Vector2(23 - move, 28), source, Color.IndianRed, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
 
                     }
                     else
@@ -281,7 +281,7 @@ namespace MumboJumbo
                             if (type_move == (int)Moves.UP)
                                 MoveAnimation(AnimateNum);                          
                             else
-                                MoveAnimation(10 - AnimateNum);
+                                MoveAnimation(9 - AnimateNum);
 
                             AnimateNum++;
    
@@ -289,7 +289,7 @@ namespace MumboJumbo
                         }
                      
                     }
-                    sp.Draw(texture, position + new Vector2(10 - move, 16), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+                    sp.Draw(texture, position + new Vector2(23 - move, 28), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
 
                 }
                 else
@@ -318,7 +318,7 @@ namespace MumboJumbo
                     FlameAnimation(FlameNum);
                     FlameNum++;
                     for (int j = 0; j < 1000; j++) ;
-                    sp.Draw(texture, position + new Vector2(15-move, 10), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+                    sp.Draw(texture, position + new Vector2(22-move, 20), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
                     sp.End();
                 }
             }
@@ -368,7 +368,7 @@ namespace MumboJumbo
 
         public void FlameAnimation(int i)
         {
-            frameSize = new Point(50, 50);
+            frameSize = new Point(59, 57);
             source = new Rectangle(i * frameSize.X, currentFrame.Y, frameSize.X, frameSize.Y);
         }
 
