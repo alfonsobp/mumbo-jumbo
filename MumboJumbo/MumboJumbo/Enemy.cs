@@ -18,8 +18,9 @@ namespace MumboJumbo
         private Texture2D spriteObject;
         private Rectangle block;
         static Random rand = new Random();
-
+        public Boolean state = true;
         Rectangle blocksBottom;
+        public Boolean isAstral = false;
 
         public Rectangle BlocksBottom
         {
@@ -61,7 +62,7 @@ namespace MumboJumbo
             set { isAlive = value; }
         }
 
-        public Enemy(Vector2 position, Texture2D text,int size)
+        public Enemy(Vector2 position, Texture2D text,int size,Boolean isAstral)
         {
 
             worldPosition = position;
@@ -72,6 +73,9 @@ namespace MumboJumbo
             blocksLeft = new Rectangle(block.Left, block.Y, block.Width / 2, block.Height);
             blocksRight = new Rectangle(block.Right, block.Y, 6, block.Height);
             spriteObject = text;
+            this.isAstral = isAstral;
+
+            state = (isAstral) ? false : true;
 
             move_face = rand.Next(0, 4);
 
@@ -143,12 +147,13 @@ namespace MumboJumbo
         {
 
             batch.Begin();
+            Color color = (isAstral) ? Color.Orange : Color.White;
 
             if (move_face == (int)moving.RIGHT || move_face == (int)moving.JUMP)
-                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, Color.White, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
             if (move_face == (int)moving.LEFT || move_face == (int)moving.JUMP_DOWN)
-                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, color, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             //batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size),Color.White);
 
