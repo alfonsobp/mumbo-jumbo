@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 
 
-enum property {SCALABLE =2,MOVIBLE=3,ACTIVABLE=4 , DESTRUIBLE=5 , HURTS=6 }
+enum property {SCALABLE =2,MOVIBLE=3,ACTIVABLE=4 , DESTRUIBLE=5 , HURTS=6, FLAMA = 8}
 enum Moves{UP,DOWN}
 
 
@@ -43,6 +43,7 @@ namespace MumboJumbo
         private Boolean astralObject = false;
         private Boolean movible = false;
         private Boolean activable = false;
+        private Boolean flamabable = false;
         private Boolean destroyable = false;
         private Boolean hurts = false;
         private Texture2D texture;
@@ -91,6 +92,7 @@ namespace MumboJumbo
             if (type == (int)property.SCALABLE) scalable = true;
             if (type == (int)property.MOVIBLE) movible = true;
             if (type == (int)property.ACTIVABLE) activable = true;
+            if (type == (int)property.FLAMA) flamabable = true;
             if (type == (int)property.DESTRUIBLE) destroyable = true;
             if (type == (int)property.HURTS) hurts = true;
            
@@ -159,6 +161,13 @@ namespace MumboJumbo
             set { block = value; }
         }
 
+
+        public Boolean Flamabable
+        {
+            get { return flamabable; }
+            set { flamabable = value; }
+        }
+
         /*public Vector2 Position
         {
             get { return position; }
@@ -209,6 +218,7 @@ namespace MumboJumbo
         }
 
         public int AnimateNum = 0;
+        public int FlameNum = 0;
 
         public void Draw(SpriteBatch sp, int move,bool astral_mode) {
 
@@ -226,8 +236,6 @@ namespace MumboJumbo
                                 AnimateNum = 0;
                                 AnimationMove = false;
                                 type_move = (type_move == (int)Moves.UP) ? (int)Moves.DOWN : (int)Moves.UP;
-
-
                             }
                             else
                             {
@@ -256,7 +264,6 @@ namespace MumboJumbo
             else
             {
                 sp.Begin();
-
                 if (activable == true)
                 {
                     if (AnimationMove)
@@ -287,12 +294,37 @@ namespace MumboJumbo
                 }
                 else
                 {
-                    sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.White);
+                    if (flamabable == true) { }
+                    else
+                    {
+
+                        sp.Draw(texture, new Rectangle((int)position.X - move, (int)position.Y, size, size), Color.White);
+                    }
                 }
                 sp.End();
             
             }
-           
+
+            if (flamabable == true)
+            {
+
+                if (FlameNum == 7)
+                {
+                    FlameNum = 0;
+                }
+                else
+                {
+                    sp.Begin();
+                    FlameAnimation(FlameNum);
+                    FlameNum++;
+                    for (int j = 0; j < 1000; j++) ;
+                    sp.Draw(texture, position + new Vector2(15-move, 10), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
+                    sp.End();
+                }
+            }
+
+
+             
         }
 
         public void Update(GameTime gt)
@@ -331,6 +363,12 @@ namespace MumboJumbo
         {
 
             frameSize = new Point(57, 46);
+            source = new Rectangle(i * frameSize.X, currentFrame.Y, frameSize.X, frameSize.Y);
+        }
+
+        public void FlameAnimation(int i)
+        {
+            frameSize = new Point(50, 50);
             source = new Rectangle(i * frameSize.X, currentFrame.Y, frameSize.X, frameSize.Y);
         }
 
