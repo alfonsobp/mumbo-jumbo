@@ -99,13 +99,13 @@ namespace MumboJumbo
         public int[,] LoadMap(int index, string path)
         {
 
-            int[,] map = new int[10, 100];
+            int[,] map = new int[12, 100];
             StreamReader sr = new StreamReader(path + index + ".txt");
             String word;
             string val = "";
             int k = 0;
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 12; i++)
             {
                 word = sr.ReadLine();
 
