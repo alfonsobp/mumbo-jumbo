@@ -109,7 +109,7 @@ namespace MumboJumbo
             time = 0f;
          
             StandAnimation();
-
+            DoorAnimation(DoorNum);
         }
 
         public Boolean Hurts
@@ -302,8 +302,7 @@ namespace MumboJumbo
 
                 }
                 else if (doordable == true)
-                {
-                    DoorAnimation(DoorNum);
+                {                    
                     if (DoorMove)
                     {
                         if (DoorNum == 8)
@@ -409,7 +408,7 @@ namespace MumboJumbo
         {
             currentFrame.Y = 0;
             frameSize = new Point(50, 60);
-            source = new Rectangle(1,currentFrame.Y + 40, frameSize.X, frameSize.Y);
+            source = new Rectangle(i * frameSize.X, currentFrame.Y + 40, frameSize.X, frameSize.Y);
         }
 
         public void StandAnimation()
