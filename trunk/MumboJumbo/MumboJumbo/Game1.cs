@@ -48,7 +48,7 @@ namespace MumboJumbo
             
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = false;           
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             started = false;
@@ -82,7 +82,8 @@ namespace MumboJumbo
             Texture2D spaceTexture = Content.Load<Texture2D>("game1");
 
             spaceBackground.AddLayer(spaceTexture, 0, 60);
-
+            spaceBackground.StartMoving();
+            spaceBackground.SetMoveRightLeft();
 
             music = Content.Load<Song>("Mumbo_Jumbo");
             MediaPlayer.IsRepeating = false;
