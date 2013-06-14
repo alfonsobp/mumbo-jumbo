@@ -78,8 +78,9 @@
             this.btn_cerrar.Name = "btn_cerrar";
             this.btn_cerrar.Size = new System.Drawing.Size(107, 50);
             this.btn_cerrar.TabIndex = 1;
-            this.btn_cerrar.Text = "button1";
+            this.btn_cerrar.Text = "Cerrar";
             this.btn_cerrar.UseVisualStyleBackColor = false;
+            this.btn_cerrar.Click += new System.EventHandler(this.btn_cerrar_Click);
             // 
             // ScoresTable
             // 
