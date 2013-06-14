@@ -93,6 +93,11 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -111,6 +116,13 @@
     <Compile Include="Button.cs" />
     <Compile Include="Astral.cs" />
     <Compile Include="Enemy.cs" />
+    <Compile Include="generatedProxy.cs" />
+    <Compile Include="Nicks.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Nicks.Designer.cs">
+      <DependentUpon>Nicks.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameOverScreen.cs" />
     <Compile Include="IntermediateScreen.cs" />
     <Compile Include="MultiBackground.cs" />
@@ -119,6 +131,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Save.cs" />
+    <Compile Include="ScoresTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScoresTable.Designer.cs">
+      <DependentUpon>ScoresTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="ScreenManager.cs" />
     <Compile Include="StartMenuScreen.cs" />
     <Compile Include="World.cs" />
@@ -163,6 +181,17 @@
       <ProductName>Microsoft XNA Framework Redistributable 4.0</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Nicks.resx">
+      <DependentUpon>Nicks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScoresTable.resx">
+      <DependentUpon>ScoresTable.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

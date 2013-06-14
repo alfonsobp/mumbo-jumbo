@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MumboJumbo
 {
@@ -79,6 +80,8 @@ namespace MumboJumbo
             {
                 if (ListMap[0].CountEnemies() == 0)
                 {
+                    Game1.client.SaveScore(Game1.gametime.TotalGameTime.TotalMinutes - p.scoreTime, Game1.idPlayer);
+                    p.scoreTime = Game1.gametime.TotalGameTime.TotalMinutes;
                     p.resetPlayer();
                     level++;
                 }

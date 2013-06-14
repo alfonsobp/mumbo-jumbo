@@ -12,6 +12,10 @@ using xnaExtras;
 using Microsoft.Xna.Framework.Storage;
 using System.Xml.Serialization;
 using System.IO;
+using microsoft.servicemodel.samples;
+using System.Windows.Forms;
+
+
 namespace MumboJumbo
 {
     public class Game1 : Microsoft.Xna.Framework.Game
@@ -21,6 +25,8 @@ namespace MumboJumbo
         public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Player player;
+        Nicks nick = null;
+        ScoresTable sc = null;
         
 
         Song music;
@@ -32,18 +38,22 @@ namespace MumboJumbo
         ScreenManager ScreenManager1 = new ScreenManager();
         StorageDevice device;
         static public double TimeInAstral=0;
-
+        static public ServiceClient client = new ServiceClient();
+        static public int idPlayer=-1;
+        static public GameTime gametime;
 
 
         public Game1()
         {
+            
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferHeight = 600;
             graphics.PreferredBackBufferWidth = 800;
             started = false;
-            this.IsMouseVisible = true;          
+            this.IsMouseVisible = true;        
+  
 
         }
 
@@ -97,14 +107,15 @@ namespace MumboJumbo
         protected override void Update(GameTime gameTime)
         
         {
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+           gametime = gameTime;
+           
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == Microsoft.Xna.Framework.Input.ButtonState.Pressed)
                 this.Exit();
             keyPrevious = key;
             key = Keyboard.GetState();
 
 
-            if (keyPrevious.IsKeyUp(Keys.Escape) && key.IsKeyDown(Keys.Escape))
+            if (keyPrevious.IsKeyUp(Microsoft.Xna.Framework.Input.Keys.Escape) && key.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
                 if (!ScreenManager1.getIntermediateScreen().Enable)
                 {
@@ -116,6 +127,37 @@ namespace MumboJumbo
 
                 }
 
+            }
+
+            if (ScreenManager1.getStartScreen().Nick.clicked)
+            {
+                ScreenManager1.getStartScreen().Nick.clicked = false;
+                if (nick == null)
+                {
+                    nick = new Nicks();
+                    nick.Show();
+                }
+
+                if (nick.IsDisposed)
+                {
+                    nick = null;
+                }
+
+            }
+
+
+            if (ScreenManager1.getStartScreen().Score.clicked) {
+                ScreenManager1.getStartScreen().Score.clicked = false;
+
+                if (sc == null)
+                {
+                    sc = new ScoresTable();
+                    sc.Show();
+                }
+
+                if (sc.IsDisposed) {
+                    sc = null;
+                }
             }
 
             if (ScreenManager1.getIntermediateScreen().Save.clicked)
@@ -145,6 +187,7 @@ namespace MumboJumbo
                     ScreenManager1.getIntermediateScreen().Resume.clicked = true;
 
                 }
+
 
             }
 
@@ -195,6 +238,9 @@ namespace MumboJumbo
 
             if (ScreenManager1.getStartScreen().Play.clicked)
             {
+                if (idPlayer == -1)
+                    idPlayer=client.AddPlayer("Anonimus",0);
+                player.scoreTime = gameTime.TotalGameTime.TotalMinutes;
                 ScreenManager1.getStartScreen().Enable = false;
                 ScreenManager1.getStartScreen().Play.clicked = false;
             }
