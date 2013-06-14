@@ -60,5 +60,10 @@ namespace MumboJumbo
         {
             this.Close();
         }
+
+        private void btn_cerrar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
