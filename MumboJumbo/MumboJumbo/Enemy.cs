@@ -80,7 +80,7 @@ namespace MumboJumbo
 
             state = (isAstral) ? false : true;
 
-            move_face = rand.Next(0, 4);
+            move_face = rand.Next(0, 2);
 
         }
 
@@ -159,7 +159,7 @@ namespace MumboJumbo
 
             if (true)
             {
-                if (EnemyMoveNum == 3)
+                if (EnemyMoveNum == 6)
                 {
                     EnemyMoveNum = 0;                                        
                 }
@@ -167,7 +167,7 @@ namespace MumboJumbo
                 {                    
                     MoveAnimation(EnemyMoveNum);                  
                     EnemyMoveNum++;
-                    for (int i = 0; i < 2000; i++) ;
+                    for (int i = 0; i < 20000; i++) ;
                 }
 
             }
@@ -185,8 +185,8 @@ namespace MumboJumbo
         public void MoveAnimation(int i)
         {
             currentFrame.Y=1;
-            frameSize = new Point(60, 46);
-            source = new Rectangle(i * (frameSize.X), currentFrame.Y * 265, frameSize.X, frameSize.Y);            
+            frameSize = new Point(54, 50);
+            source = new Rectangle(i * (frameSize.X + 10), currentFrame.Y * 80, frameSize.X, frameSize.Y);            
         }
 
     }
