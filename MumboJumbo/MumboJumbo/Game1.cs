@@ -249,7 +249,13 @@ namespace MumboJumbo
             if (ScreenManager1.getStartScreen().Play.clicked)
             {
                 if (idPlayer == -1)
-                    idPlayer=client.AddPlayer("Anonimus",0);
+                {
+                    try
+                    {
+                        idPlayer = client.AddPlayer("Anonimus", 0);
+                    }
+                    catch (Exception e) { }
+                }
                 player.scoreTime = gameTime.TotalGameTime.TotalMinutes;
                 ScreenManager1.getStartScreen().Enable = false;
                 ScreenManager1.getStartScreen().Play.clicked = false;
