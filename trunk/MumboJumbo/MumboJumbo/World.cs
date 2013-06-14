@@ -188,7 +188,7 @@ namespace MumboJumbo
 
                     /*Interseccion de la parte de arriba del player parte de abajo de un elemento*/
 
-                    if (!elem.Scalable && !elem.Activable)
+                    if (!elem.Scalable && !elem.Activable && !elem.Doordable)
                     {
                         if (elem.BlocksBottom.Intersects(player.topBounds))
                         {
@@ -276,6 +276,16 @@ namespace MumboJumbo
                             }
 
                         }
+
+                        if (elem.Doordable)
+                        {
+                            if (key.IsKeyDown(Keys.D) && !keyPrevious.IsKeyDown(Keys.D))
+                            {
+                                elem.DoorMove = true;                                
+                            }
+
+                        }
+
                     }
 
                     elem.Update(gameTime);
