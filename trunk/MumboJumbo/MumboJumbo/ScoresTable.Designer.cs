@@ -38,13 +38,17 @@
             // 
             // tabla
             // 
-            this.tabla.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.tabla.AllowDrop = true;
+            this.tabla.AllowUserToAddRows = false;
+            this.tabla.AllowUserToDeleteRows = false;
+            this.tabla.BackgroundColor = System.Drawing.Color.Tomato;
             this.tabla.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tabla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tabla.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nickname,
             this.Level,
             this.Time});
+            this.tabla.GridColor = System.Drawing.Color.Tomato;
             this.tabla.Location = new System.Drawing.Point(12, 30);
             this.tabla.Name = "tabla";
             this.tabla.Size = new System.Drawing.Size(345, 347);
@@ -68,19 +72,20 @@
             // 
             // btnCerrar
             // 
+            this.btnCerrar.BackColor = System.Drawing.Color.Tomato;
             this.btnCerrar.Location = new System.Drawing.Point(391, 30);
             this.btnCerrar.Name = "btnCerrar";
             this.btnCerrar.Size = new System.Drawing.Size(98, 52);
             this.btnCerrar.TabIndex = 1;
             this.btnCerrar.Text = "Cerrar";
-            this.btnCerrar.UseVisualStyleBackColor = true;
+            this.btnCerrar.UseVisualStyleBackColor = false;
             this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
             // 
             // ScoresTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.BackColor = System.Drawing.Color.Tomato;
             this.ClientSize = new System.Drawing.Size(511, 400);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.tabla);

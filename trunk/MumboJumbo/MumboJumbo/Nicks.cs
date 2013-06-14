@@ -24,15 +24,23 @@ namespace MumboJumbo
 
         private void button1_Click(object sender, EventArgs e)
         {
-          
-            
+
+            try
+            {
                 int id = Game1.client.AddPlayer(textBox1.Text, 0);
                 Game1.idPlayer = id;
-               // MessageBox.Show("" + id);
+                // MessageBox.Show("" + id);
+            }
+            catch (Exception en) { };
 
                 this.Close();
 
             
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
 
         }
     }
