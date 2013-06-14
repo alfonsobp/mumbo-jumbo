@@ -211,7 +211,7 @@ namespace MumboJumbo
                 if (AnimateNum == 3)
                 {
                     AnimateNum = 0;
-                    state = "satnd";                                
+                    state = "stand";                                
                 }
                 else
                 {

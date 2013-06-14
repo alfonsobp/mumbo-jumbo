@@ -17,6 +17,9 @@ namespace MumboJumbo
         public Vector2 worldPosition;
         private Texture2D spriteObject;
         private Rectangle block;
+        public Point frameSize;
+        public Point currentFrame;
+        public Rectangle source;
         static Random rand = new Random();
         public Boolean state = true;
         Rectangle blocksBottom;
@@ -143,22 +146,47 @@ namespace MumboJumbo
 
         }
 
+
+        public int EnemyMoveNum = 0;
+
         public void Draw(SpriteBatch batch, int move)
         {
 
             batch.Begin();
             Color color = (isAstral) ? Color.Orange : Color.White;
 
+            //batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size),Color.White);
+
+            if (true)
+            {
+                if (EnemyMoveNum == 3)
+                {
+                    EnemyMoveNum = 0;                                        
+                }
+                else
+                {                    
+                    MoveAnimation(EnemyMoveNum);                  
+                    EnemyMoveNum++;
+                    for (int i = 0; i < 2000; i++) ;
+                }
+
+            }
+
             if (move_face == (int)moving.RIGHT || move_face == (int)moving.JUMP)
-                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
+                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size),source, color, 0, Vector2.Zero, SpriteEffects.FlipHorizontally, 0);
 
             if (move_face == (int)moving.LEFT || move_face == (int)moving.JUMP_DOWN)
-                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size), null, color, 0, Vector2.Zero, SpriteEffects.None, 0);
-
-            //batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size),Color.White);
+                batch.Draw(spriteObject, new Rectangle((int)worldPosition.X - move, (int)worldPosition.Y, size, size),source, color, 0, Vector2.Zero, SpriteEffects.None, 0);
 
             batch.End();
 
+        }
+
+        public void MoveAnimation(int i)
+        {
+            currentFrame.Y=1;
+            frameSize = new Point(60, 46);
+            source = new Rectangle(i * (frameSize.X), currentFrame.Y * 265, frameSize.X, frameSize.Y);            
         }
 
     }

@@ -28,7 +28,7 @@ namespace MumboJumbo
             Texture2D tex4 = ct.Load<Texture2D>("palanca_Sheet");
             Texture2D tex5 = ct.Load<Texture2D>("Ice_Block");
             Texture2D tex6 = ct.Load<Texture2D>("Pua");
-            Texture2D tex7 = ct.Load<Texture2D>("Ardilla");
+            Texture2D tex7 = ct.Load<Texture2D>("Monster-squirrel");
             Texture2D tex8 = ct.Load<Texture2D>("Flame");
 
 
