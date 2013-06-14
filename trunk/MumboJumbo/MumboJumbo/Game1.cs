@@ -148,6 +148,18 @@ namespace MumboJumbo
 
             }
 
+            if (ScreenManager1.getGameOver().Play.clicked)
+            {
+
+                player.Lives = 5;
+                WorldManager1.level = 0;
+                WorldManager1.Start(Content);
+
+                ScreenManager1.getStartScreen().Enable = true;
+                ScreenManager1.getGameOver().Enable = false;
+                ScreenManager1.getGameOver().Play.clicked = false;
+            }
+
          
             WorldManager1.getCurrentWorld().Update(gameTime, player);
 

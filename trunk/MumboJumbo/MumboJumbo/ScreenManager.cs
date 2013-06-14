@@ -48,15 +48,13 @@ namespace MumboJumbo
                 Iscreen.Update();
 
             }
-        
+
+            if (Oscreen.Enable)
+            {
+                Oscreen.Update();
+
+            }
         
         }
-
-
-
-
-
-
-
     }
 }
