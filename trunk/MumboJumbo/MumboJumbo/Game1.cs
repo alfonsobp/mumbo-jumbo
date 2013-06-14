@@ -32,7 +32,8 @@ namespace MumboJumbo
         Song music;
         bool started;
 
-        MultiBackground spaceBackground;        
+        MultiBackground spaceBackground;
+        MultiBackground cloudBackground;
         
         WorldManager WorldManager1 = new WorldManager();
         ScreenManager ScreenManager1 = new ScreenManager();
@@ -79,10 +80,17 @@ namespace MumboJumbo
 
 
             spaceBackground = new MultiBackground(graphics);
+            cloudBackground = new MultiBackground(graphics);
+
             Texture2D spaceTexture = Content.Load<Texture2D>("game1");
+            Texture2D cloudTexture = Content.Load<Texture2D>("bg_clouds");
 
             spaceBackground.AddLayer(spaceTexture, 0, 60);
+            cloudBackground.AddLayer(cloudTexture, 0, 60);
+
             spaceBackground.StartMoving();
+            cloudBackground.StartMoving();
+
             spaceBackground.SetMoveRightLeft();
 
             music = Content.Load<Song>("Mumbo_Jumbo");
@@ -231,6 +239,7 @@ namespace MumboJumbo
                 }
 
                 spaceBackground.Update(gameTime);
+                cloudBackground.Update(gametime);
                 player.Update(gameTime);
   
                 Camera();
@@ -278,6 +287,7 @@ namespace MumboJumbo
             if (!ScreenManager1.getStartScreen().Enable && !ScreenManager1.getIntermediateScreen().Enable)
             {
                 spaceBackground.Draw();
+                cloudBackground.Draw();
                 WorldManager1.getCurrentWorld().Draw(spriteBatch);
                 player.Draw(spriteBatch);
 
