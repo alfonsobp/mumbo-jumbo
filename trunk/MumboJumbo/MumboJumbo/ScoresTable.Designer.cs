@@ -32,7 +32,7 @@
             this.nickname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Level = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnCerrar = new System.Windows.Forms.Button();
+            this.btn_cerrar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tabla)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,7 +49,7 @@
             this.Level,
             this.Time});
             this.tabla.GridColor = System.Drawing.Color.Tomato;
-            this.tabla.Location = new System.Drawing.Point(12, 30);
+            this.tabla.Location = new System.Drawing.Point(12, 12);
             this.tabla.Name = "tabla";
             this.tabla.Size = new System.Drawing.Size(345, 347);
             this.tabla.TabIndex = 0;
@@ -70,16 +70,16 @@
             this.Time.HeaderText = "Best Time";
             this.Time.Name = "Time";
             // 
-            // btnCerrar
+            // btn_cerrar
             // 
-            this.btnCerrar.BackColor = System.Drawing.Color.Tomato;
-            this.btnCerrar.Location = new System.Drawing.Point(391, 30);
-            this.btnCerrar.Name = "btnCerrar";
-            this.btnCerrar.Size = new System.Drawing.Size(98, 52);
-            this.btnCerrar.TabIndex = 1;
-            this.btnCerrar.Text = "Cerrar";
-            this.btnCerrar.UseVisualStyleBackColor = false;
-            this.btnCerrar.Click += new System.EventHandler(this.btnCerrar_Click);
+            this.btn_cerrar.BackColor = System.Drawing.Color.Tomato;
+            this.btn_cerrar.ForeColor = System.Drawing.Color.Transparent;
+            this.btn_cerrar.Location = new System.Drawing.Point(378, 12);
+            this.btn_cerrar.Name = "btn_cerrar";
+            this.btn_cerrar.Size = new System.Drawing.Size(107, 50);
+            this.btn_cerrar.TabIndex = 1;
+            this.btn_cerrar.Text = "button1";
+            this.btn_cerrar.UseVisualStyleBackColor = false;
             // 
             // ScoresTable
             // 
@@ -87,7 +87,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Tomato;
             this.ClientSize = new System.Drawing.Size(511, 400);
-            this.Controls.Add(this.btnCerrar);
+            this.Controls.Add(this.btn_cerrar);
             this.Controls.Add(this.tabla);
             this.Name = "ScoresTable";
             this.Text = "Scores";
@@ -103,6 +103,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn nickname;
         private System.Windows.Forms.DataGridViewTextBoxColumn Level;
         private System.Windows.Forms.DataGridViewTextBoxColumn Time;
-        private System.Windows.Forms.Button btnCerrar;
+        private System.Windows.Forms.Button btn_cerrar;
     }
 }
