@@ -38,6 +38,7 @@ namespace MumboJumbo
         public string state;
         public bool jump;
         public float jumpSpeed;
+        public double scoreTime;
         Boolean life = true;
         int lives = 5;
         public int AnimateNum = 0;
