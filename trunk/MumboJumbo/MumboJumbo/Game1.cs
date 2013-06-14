@@ -152,6 +152,8 @@ namespace MumboJumbo
             {
 
                 player.Lives = 5;
+                player.cameraPosition = new Vector2 (0,0);
+                player.worldPosition = new Vector2(0, 0);
                 WorldManager1.level = 0;
                 WorldManager1.Start(Content);
 
