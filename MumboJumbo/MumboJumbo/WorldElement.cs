@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Storage;
 
 
 
-enum property {SCALABLE =2,MOVIBLE=3,ACTIVABLE=4 , DESTRUIBLE=5 , HURTS=6, FLAMA = 8}
+enum property {SCALABLE =2,MOVIBLE=3,ACTIVABLE=4 , DESTRUIBLE=5 , HURTS=6, FLAMA = 8, DOOR = 9}
 enum Moves{UP,DOWN}
 
 
@@ -45,6 +45,7 @@ namespace MumboJumbo
         private Boolean activable = false;
         private Boolean flamabable = false;
         private Boolean destroyable = false;
+        private Boolean doordable = false;
         private Boolean hurts = false;
         private Texture2D texture;
         private int size;
@@ -59,6 +60,7 @@ namespace MumboJumbo
         public static Point currentFrame;
         public Rectangle source;
         public int type_move = (int)Moves.UP;
+        public int type_move2 = (int)Moves.UP;
         public int nMoves;
         
         
@@ -72,6 +74,7 @@ namespace MumboJumbo
         int numMove = 0;
 
         public bool AnimationMove = false;
+        public bool DoorMove = false;
 
         public WorldElement()
         {
@@ -95,6 +98,7 @@ namespace MumboJumbo
             if (type == (int)property.FLAMA) flamabable = true;
             if (type == (int)property.DESTRUIBLE) destroyable = true;
             if (type == (int)property.HURTS) hurts = true;
+            if (type == (int)property.DOOR) doordable = true;
            
             this.astralObject = astralObject;
             if (astralObject) this.state = false;
@@ -168,6 +172,12 @@ namespace MumboJumbo
             set { flamabable = value; }
         }
 
+        public Boolean Doordable
+        {
+            get { return doordable; }
+            set { doordable = value; }
+        }
+
         /*public Vector2 Position
         {
             get { return position; }
@@ -219,6 +229,7 @@ namespace MumboJumbo
 
         public int AnimateNum = 0;
         public int FlameNum = 0;
+        public int DoorNum = 0;
 
         public void Draw(SpriteBatch sp, int move,bool astral_mode) {
 
@@ -272,9 +283,7 @@ namespace MumboJumbo
                         {
                             AnimateNum = 0;
                             AnimationMove = false;
-                            type_move = (type_move == (int)Moves.UP) ? (int)Moves.DOWN : (int)Moves.UP;
-                               
-
+                            type_move = (type_move == (int)Moves.UP) ? (int)Moves.DOWN : (int)Moves.UP;                               
                         }
                         else
                         {
@@ -291,6 +300,30 @@ namespace MumboJumbo
                     }
                     sp.Draw(texture, position + new Vector2(23 - move, 28), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
 
+                }
+                else if (doordable == true)
+                {
+                    DoorAnimation(DoorNum);
+                    if (DoorMove)
+                    {
+                        if (DoorNum == 8)
+                        {
+                            DoorNum = 0;
+                            DoorMove = false;
+                            type_move2 = (type_move2 == (int)Moves.UP) ? (int)Moves.DOWN : (int)Moves.UP;
+                        }
+                        else
+                        {
+                            if (type_move2 == (int)Moves.UP)
+                                DoorAnimation(DoorNum);
+                            else
+                                DoorAnimation(7 - DoorNum);
+
+                            DoorNum++;
+                            for (int i = 0; i < 1000; i++) ;
+                        }
+                    }
+                    sp.Draw(texture, position + new Vector2(23 - move,20), source, Color.White, 0f, new Vector2(block.Width / 2, block.Height / 2), 1.0f, SpriteEffects.None, 0);
                 }
                 else
                 {
@@ -370,6 +403,13 @@ namespace MumboJumbo
         {
             frameSize = new Point(59, 57);
             source = new Rectangle(i * frameSize.X, currentFrame.Y, frameSize.X, frameSize.Y);
+        }
+
+        public void DoorAnimation(int i)
+        {
+            currentFrame.Y = 0;
+            frameSize = new Point(50, 60);
+            source = new Rectangle(1,currentFrame.Y + 40, frameSize.X, frameSize.Y);
         }
 
         public void StandAnimation()
