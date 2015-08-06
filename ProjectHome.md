@@ -1,0 +1,1 @@
+MumboJumbo is a innovative project - game for a course of Programming Language 2 in the PUCP. It's an adventure about a boy who can leave his human form and travel in a unknown world.
